@@ -50,29 +50,29 @@ if(isset($_POST['submit'])){
 		<form method="POST" action="">
         <div class="field input">
 			<label for="firstname">First Name</label>
-			<input type="text" class="input" name="firstname" autocomplete="off" placeholder="Enter first name"/>
+			<input type="text" class="input" name="firstname" autocomplete="off" placeholder="Enter first name" required/>
 		</div>
         <div class="field input">
 			<label for="lastname">Last Name</label>
-			<input type="text" class="input" name="lastname" autocomplete="off" placeholder="Enter last name"/>
+			<input type="text" class="input" name="lastname" autocomplete="off" placeholder="Enter last name" required/>
 		</div>
 		<div class="field input">
 			<label for="username">Username</label>
-			<input type="text" class="input" name="username" autocomplete="off" placeholder="Enter username"/>
+			<input type="text" class="input" name="username" autocomplete="off" placeholder="Enter username" required/>
 		</div>
         <div class="field input">
 			<label for="email">Email</label>
-			<input type="email" class="input" name="email" autocomplete="off" placeholder="Enter email"/>
+			<input type="email" class="input" name="email" autocomplete="off" placeholder="Enter email" required/>
 		</div>
 		<div class="field input">
 			<label for="password">Password</label>
-			<input type="password" class="input" name="password" autocomplete="off" placeholder="Enter password"/>
+			<input type="password" class="input" name="password" autocomplete="off" placeholder="Enter password" required/>
 		</div>
 		<div class="field">
 			<input type="submit" name="submit" value="Register"/>
 		</div>
 		<div class="links">
-			Already have an account?<a href="login.php">Login Here</a>
+			Already have an account?<br><a href="login.php">Login Here</a>
 		</div>
 		</form>
 	</div>

@@ -22,20 +22,14 @@ try {
         <title>Sugaree Cafe & Gelato</title>
 
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-
-        <!--- CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
         <link rel="stylesheet" href="css/style.css">
 
-        <!--- Javascript -->
         <script src="js/script.js"></script>
     </head>
     <body>
         <header>
-            <a href="#" class="logo">
-                <img src="img/logo.png" alt="Sugaree Logo">
-                Sugaree
-            </a>
+            <a href="#" class="logo"><img src="img/logo.png" alt="Sugaree Logo">Sugaree</a>
             <nav class="navbar">
                 <a class="active" href="#home">Home</a>
                 <a href="#dishes">Dishes</a>
@@ -48,28 +42,25 @@ try {
                         <a href="#"><img src="img/grab.png" alt="Grab Logo" class="logo"> Grab</a>
                         <a href="#"><img src="img/foodpanda.png" alt="FoodPanda Logo" class="logo"> FoodPanda</a>
                         <a href="https://www.facebook.com/EboyRiderOfficialPage" target="_blank"><img src="img/eboy.jpg" alt="Eboy Logo" class="logo"> Eboy</a>
-</nav>
+            </nav>
 
 <div class="icons">
     <i class="fas fa-bars" id="menu-bars"></i>
     <i class="fas fa-search" id= "search-icon"></i>
     <a href="#" class="fas fa-heart"></a>
-    <a href="login.php" id="loginLink" class="fas fa-sign-in-alt"></a> 
-    <button id="logoutButton" class="fas fa-sign-out-alt" style="display:none; border: none; background: none; cursor: pointer;"></button>
+    <a href="profile.php" id="loginLink" class="fas fa-user"></a> 
+    <button id="profileButton" class="fas fa-user" style="display:none; border: none; background: none; cursor: pointer;"></button>
 
 </div>
     </nav>
 </header>
 
-<!--- SEARCH -->
 <form action="" id="search-form">
     <input type="search" name="" id="search-box">
     <label for="search-box" placeholder="Search here..." class="fas fa-search"></label>
     <i class="fas fa-times" id="close"></i>
 </form>
 
-
-<!--- home -->
 <section class="home" id="home">
     <div class="swiper-container home-slider">
         <div class="swiper-wrapper wrapper">
@@ -95,8 +86,6 @@ try {
     </div>
 </section>
 
-
-<!--- dishes section -->
 
 <section class="dishes"  id="dishes">
 
@@ -219,7 +208,6 @@ try {
     </div>
 </div>
 
-<!-- about -->
 <section class="about" id="about">
 <h3 class="sub-heading"> About Sugaree </h3>
 <h1 class="heading"> Why choose Sugaree? </h1>
@@ -262,11 +250,7 @@ try {
 
 </div>
 
-
-
 </div>
-
-<!-----Gallery--->
 
 <section class="gallery" id="gallery">
 
@@ -329,8 +313,6 @@ try {
         </div>
 
     </div>
-    
-<!--- review -->
 
 <section class="review" id="review">
     <h3 class="sub-heading">people's review</h3>
@@ -451,14 +433,7 @@ try {
 </section>
 </div>
 
-
     </div>
-
-
-
-
-
-
 
 </section>
 
@@ -500,55 +475,22 @@ try {
 
 <div class="credit"> copyright @ 2024 by <span>iBento Creatives - Dyne-Russ-Romeo </span></div>
 
-
-
     </div>
-</section>
-
-
-
-
-
-
-
-
 
 </section>
 
-
+</section>
 
 </section>
 
-
-
-
-
-
 </section>
 
-
-
-
-
-
-
 </section>
-
-
-
-
-
-
-
-
-
 
     </head>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-
-<!--- custom js -->
     <script src="js/script.js"></script>
 
 </body>
