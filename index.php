@@ -11,6 +11,24 @@ try {
     echo 'Connection failed: ' . $e->getMessage();
     exit();
 }
+
+$apiKey = 'AIzaSyAMlZBObSXdu1YYL6w2bq5JxLrJkGEd71s';
+$videoId = '48bVT1KD78I';
+
+$apiUrl = "https://www.googleapis.com/youtube/v3/videos?part=snippet&id={$videoId}&key={$apiKey}";
+$videoData = json_decode(file_get_contents($apiUrl), true);
+
+if (!empty($videoData['items'])) {
+    $videoTitle = $videoData['items'][0]['snippet']['title'];
+    $videoDescription = $videoData['items'][0]['snippet']['description'];
+    $videoThumbnail = $videoData['items'][0]['snippet']['thumbnails']['high']['url'];
+    $videoEmbedUrl = "https://www.youtube.com/embed/{$videoId}";
+} else {
+    $videoTitle = 'Video not found';
+    $videoDescription = '';
+    $videoThumbnail = '';
+    $videoEmbedUrl = '';
+}
 ?>
 
 <!DOCTYPE html>
@@ -42,49 +60,53 @@ try {
                         <a href="#"><img src="img/grab.png" alt="Grab Logo" class="logo"> Grab</a>
                         <a href="#"><img src="img/foodpanda.png" alt="FoodPanda Logo" class="logo"> FoodPanda</a>
                         <a href="https://www.facebook.com/EboyRiderOfficialPage" target="_blank"><img src="img/eboy.jpg" alt="Eboy Logo" class="logo"> Eboy</a>
+                    </div>
+                </div>
             </nav>
 
-<div class="icons">
-    <i class="fas fa-bars" id="menu-bars"></i>
-    <i class="fas fa-search" id= "search-icon"></i>
-    <a href="#" class="fas fa-heart"></a>
-    <a href="profile.php" id="loginLink" class="fas fa-user"></a> 
-    <button id="profileButton" class="fas fa-user" style="display:none; border: none; background: none; cursor: pointer;"></button>
-
-</div>
-    </nav>
-</header>
-
-<form action="" id="search-form">
-    <input type="search" name="" id="search-box">
-    <label for="search-box" placeholder="Search here..." class="fas fa-search"></label>
-    <i class="fas fa-times" id="close"></i>
-</form>
-
-<section class="home" id="home">
-    <div class="swiper-container home-slider">
-        <div class="swiper-wrapper wrapper">
-            <?php 
-            $initialSlides = $slides;
-
-            foreach ($initialSlides as $slide): 
-            ?>
-            <div class="swiper-slide slide">
-                <div class="content">
-                    <span> Our specialty </span>
-                    <h3><?php echo $slide['specialty_title']; ?></h3>
-                    <p><?php echo $slide['specialty_desc']; ?></p>
-                    <a href="menu.php" class="btn">Order Now</a>
-                </div>
-                <div class="image">
-                    <img src="<?php echo $slide['specialty_img']; ?>" alt='specialty_alt'>
-                </div>
+            <div class="icons">
+                <i class="fas fa-bars" id="menu-bars"></i>
+                <i class="fas fa-search" id="search-icon"></i>
+                <a href="#" class="fas fa-heart"></a>
+                <a href="profile.php" id="loginLink" class="fas fa-user"></a> 
+                <button id="profileButton" class="fas fa-user" style="display:none; border: none; background: none; cursor: pointer;"></button>
             </div>
-            <?php endforeach; ?>
-        </div>
-        <div class="swiper-pagination"></div>
-    </div>
-</section>
+        </header>
+
+        <form action="" id="search-form">
+            <input type="search" name="" id="search-box">
+            <label for="search-box" placeholder="Search here..." class="fas fa-search"></label>
+            <i class="fas fa-times" id="close"></i>
+        </form>
+
+        <section class="home" id="home">
+            <div class="swiper-container home-slider">
+                <div class="swiper-wrapper wrapper">
+                    <?php 
+                    if (!empty($slides)) {
+                        foreach ($slides as $slide): 
+                    ?>
+                    <div class="swiper-slide slide">
+                        <div class="content">
+                            <span> Our specialty </span>
+                            <h3><?php echo $slide['specialty_title']; ?></h3>
+                            <p><?php echo $slide['specialty_desc']; ?></p>
+                            <a href="menu.php" class="btn">Order Now</a>
+                        </div>
+                        <div class="image">
+                            <img src="<?php echo $slide['specialty_img']; ?>" alt="<?php echo $slide['specialty_title']; ?>">
+                        </div>
+                    </div>
+                    <?php 
+                        endforeach;
+                    } else {
+                        echo '<p>No specialties found.</p>';
+                    }
+                    ?>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </section>
 
 
 <section class="dishes"  id="dishes">
@@ -108,7 +130,7 @@ try {
             <i class="fas fa-star-half-alt"></i>
         </div>
         <span>PHP 85.50 </span>
-        <a href="#" class="btn">Go to Menu</a>
+        <a href="menu.php" class="btn">Go to Menu</a>
         </div>
 
         <div class="box">
@@ -125,7 +147,7 @@ try {
             </div>
 
             <span>PHP 399.50 </span>
-            <a href="#" class="btn">Go to Menu</a>
+            <a href="menu.php" class="btn">Go to Menu</a>
             </div>
             <div class="box">
                 <a href="#" class="fas fa-heart"></a>
@@ -140,7 +162,7 @@ try {
                     <i class="fas fa-star-half-alt"></i>
                 </div>
                 <span>PHP 120.99 </span>
-                <a href="#" class="btn">Go to Menu</a>
+                <a href="menu.php" class="btn">Go to Menu</a>
                 </div>
                 <div class="box">
                     <a href="#" class="fas fa-heart"></a>
@@ -155,7 +177,7 @@ try {
                         <i class="fas fa-star-half-alt"></i>
                     </div>
                     <span>PHP 180.99 </span>
-                    <a href="#" class="btn">Go to Menu</a>
+                    <a href="menu.php" class="btn">Go to Menu</a>
                     </div>
                     <div class="box">
                         <a href="#" class="fas fa-heart"></a>
@@ -170,7 +192,7 @@ try {
                             <i class="fas fa-star-half-alt"></i>
                         </div>
                         <span>PHP 150.99 </span>
-                        <a href="#" class="btn">Go to Menu</a>
+                        <a href="menu.php" class="btn">Go to Menu</a>
                         </div>
                         <div class="box">
                             <a href="#" class="fas fa-heart"></a>
@@ -209,14 +231,48 @@ try {
 </div>
 
 <section class="about" id="about">
-<h3 class="sub-heading"> About Sugaree </h3>
-<h1 class="heading"> Why choose Sugaree? </h1>
+        <h3 class="sub-heading"> About Sugaree </h3>
+        <h1 class="heading"> Why choose Sugaree? </h1>
 
-<div class="row">
+        <div class="row">
+        <div class="image">
+            <div id="youtube-player"></div>
+        </div>
 
-    <div class="image">
-        <img src="img/Sugaree.jpg" alt="">
-    </div>
+<script>
+    // Function called when the YouTube IFrame API is ready
+    function onYouTubeIframeAPIReady() {
+        // Create a new YouTube player instance
+        const player = new YT.Player('youtube-player', {
+            height: '750',
+            width: '1500',
+            videoId: '48bVT1KD78I', 
+            playerVars: {
+                'autoplay': 0, 
+                'loop': 1,     
+                'controls': 1, 
+                'rel': 0       
+            },
+            events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
+            }
+        });
+
+        // Function to start the video when player is ready
+        function onPlayerReady(event) {
+            event.target.playVideo();
+        }
+
+        // Function to loop the video when it ends
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.ENDED) {
+                event.target.seekTo(0); // Seek to the beginning
+                event.target.playVideo(); // Play the video again
+            }
+        }
+    }
+</script>
 
 <div class="content">
     <h3>The only one on Bacolod that serves Gelato</h3>
@@ -245,12 +301,9 @@ try {
     </div>
     <a href="#" class="btn">learn more</a>
 
-
 </div>
-
 </div>
-
-</div>
+                </section>
 
 <section class="gallery" id="gallery">
 

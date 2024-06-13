@@ -1,5 +1,31 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Your JavaScript code here
+
+    function onYouTubeIframeAPIReady() {
+        const player = new YT.Player('youtube-player', {
+            events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    }
+
+    function onPlayerReady(event) {
+        event.target.playVideo(); // Auto-play the video
+    }
+
+    function onPlayerStateChange(event) {
+        if (event.data === YT.PlayerState.ENDED) {
+            event.target.seekTo(0); // Seek to the beginning of the video
+            event.target.playVideo(); // Play the video again
+        }
+    }
+
+    // Load the YouTube IFrame Player API asynchronously
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
     let menu = document.querySelector('#menu-bars');
     let navbar = document.querySelector('.navbar');
     let searchIcon = document.querySelector('#search-icon');
@@ -43,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         spaceBetween: 30,
         centeredSlides: true,
         autoplay: {
-            delay: 1000,
+            delay: 4000,
             disableOnInteraction: false,
         },
         loop: true,
@@ -68,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
         spaceBetween: 20,
         centeredSlides: true,
         autoplay: {
-            delay: 500,
+            delay: 4000,
             disableOnInteraction: false,
         },
         loop: true,
@@ -78,4 +104,5 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         allowTouchMove: true,
     });
+
 });

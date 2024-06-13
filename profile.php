@@ -16,7 +16,7 @@ if (isset($_SESSION['valid'])) {
         <a href='index.php'><button class='btn'>Home</button></a>
         </div>";
 } else {
-    header("Location: login.php");
+    header("Location: login_register.php");
     exit();
 }
 ?>
