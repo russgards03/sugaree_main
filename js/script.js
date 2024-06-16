@@ -89,7 +89,6 @@ document.addEventListener('DOMContentLoaded', () => {
         },
     });
 
-    // Swiper for the home slider
     var homeSwiper = new Swiper(".home-slider", {
         spaceBetween: 20,
         centeredSlides: true,

@@ -452,7 +452,6 @@ input {
     display: none;
 }
 
-/* Gallery styles */
 .gallery .container {
     width: 100%;
     text-align: center;
@@ -584,64 +583,35 @@ input {
     opacity: 1;
 }
 
-.container .photo-gallery .pic {
-    opacity: 0;
-    transform: scale(0);
-    transition: opacity 0.5s, transform 0.5s;
-}
-
-#check1:checked ~ .container .photo-gallery .pic{
+/* Initial state for all images */
+.gallery .photo-gallery .pic {
     opacity: 1;
     transform: scale(1);
-    position: relative;
-    transition: .0s;
-
-}
-#check2:checked ~  .container .photo-gallery .crew{
-    transform: scale(1);
-    opacity:1;
-    position: relative;
-    transition: .5s;
-}
-#check2:checked ~  .container .photo-gallery .food,
-#check2:checked ~  .container .photo-gallery .place{
-    transform: scale(0);
-    opacity:0;
-    position: absolute;
-    transition: 0s;
-}
-#check3:checked ~  .container .photo-gallery .food{
-    transform: scale(1);
-    opacity:1;
-    position: relative;
-    transition: .5s;
-}
-#check3:checked ~  .container .photo-gallery .crew,
-#check3:checked ~  .container .photo-gallery .place{
-    transform: scale(0);
-    opacity:0;
-    position: absolute;
-    transition: 0s;
-}
-#check4:checked ~  .container .photo-gallery .place{
-    transform: scale(1);
-    opacity:1;
-    position: relative;
-    transition: .5s;
-}
-#check4:checked ~  .container .photo-gallery .crew,
-#check4:checked ~  .container .photo-gallery .food{
-    transform: scale(0);
-    opacity:0;
-    position: absolute;
-    transition: 0s;
 }
 
-:root {
-    --green: #27ae60;
-    --black: #192a56;
-    --light-color: #666; 
-    --box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, 0.1);
+/* Show only 'All' selected */
+#check1:checked ~ .container .photo-gallery .pic {
+    display: block;
+}
+
+/* Show only 'Crew' selected */
+#check2:checked ~ .container .photo-gallery .pic.crew {
+    display: block;
+}
+
+/* Show only 'Food' selected */
+#check3:checked ~ .container .photo-gallery .pic.food {
+    display: block;
+}
+
+/* Show only 'Place' selected */
+#check4:checked ~ .container .photo-gallery .pic.place {
+    display: block;
+}
+
+.pic.crew {
+    height: '750';
+    width: '1500';
 }
 
 :root {

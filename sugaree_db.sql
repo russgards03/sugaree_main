@@ -29,3 +29,12 @@ CREATE TABLE `tbl_specialties` (
   `specialty_alt` varchar(255) NOT NULL,
   PRIMARY KEY (`specialty_id`)
 );
+
+DROP TABLE IF EXISTS `tbl_images`;
+CREATE TABLE `tbl_images` (
+  `image_id` int(11) NOT NULL AUTO_INCREMENT,
+  `image_src` varchar(255) NOT NULL,
+  `image_alt` varchar(255) NOT NULL,
+  `image_category` varchar(255) NOT NULL,
+  PRIMARY KEY (`image_id`)
+);

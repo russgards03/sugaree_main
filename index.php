@@ -5,8 +5,11 @@ try {
     $pdo = new PDO("mysql:host=" . DB_SERVER . ";dbname=" . DB_DATABASE, DB_USERNAME, DB_PASSWORD);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $stmt = $pdo->query("SELECT * FROM tbl_specialties");
-    $slides = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmtspecialties = $pdo->query("SELECT * FROM tbl_specialties");
+    $specialties = $stmtspecialties->fetchAll(PDO::FETCH_ASSOC);
+
+    $stmtImages = $pdo->query("SELECT * FROM tbl_images");
+    $images = $stmtImages->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     echo 'Connection failed: ' . $e->getMessage();
     exit();
@@ -83,18 +86,18 @@ if (!empty($videoData['items'])) {
             <div class="swiper-container home-slider">
                 <div class="swiper-wrapper wrapper">
                     <?php 
-                    if (!empty($slides)) {
-                        foreach ($slides as $slide): 
+                    if (!empty($specialties)) {
+                        foreach ($specialties as $specialties): 
                     ?>
                     <div class="swiper-slide slide">
                         <div class="content">
                             <span> Our specialty </span>
-                            <h3><?php echo $slide['specialty_title']; ?></h3>
-                            <p><?php echo $slide['specialty_desc']; ?></p>
+                            <h3><?php echo $specialties['specialty_title']; ?></h3>
+                            <p><?php echo $specialties['specialty_desc']; ?></p>
                             <a href="menu.php" class="btn">Order Now</a>
                         </div>
                         <div class="image">
-                            <img src="<?php echo $slide['specialty_img']; ?>" alt="<?php echo $slide['specialty_title']; ?>">
+                            <img src="<?php echo $specialties['specialty_img']; ?>" alt="<?php echo $slide['specialty_title']; ?>">
                         </div>
                     </div>
                     <?php 
@@ -240,6 +243,7 @@ if (!empty($videoData['items'])) {
         </div>
 
 <script>
+
     // Function called when the YouTube IFrame API is ready
     function onYouTubeIframeAPIReady() {
         // Create a new YouTube player instance
@@ -272,6 +276,7 @@ if (!empty($videoData['items'])) {
             }
         }
     }
+
 </script>
 
 <div class="content">
@@ -303,69 +308,81 @@ if (!empty($videoData['items'])) {
 
 </div>
 </div>
-                </section>
+    </section>
 
-<section class="gallery" id="gallery">
+    <section class="gallery" id="gallery">
 
-    <input type="radio" name="Photos" id="check1" checked>
-    <input type="radio" name="Photos" id="check2" checked>
-    <input type="radio" name="Photos" id="check3" checked>
-    <input type="radio" name="Photos" id="check4" checked>
-    
-    <div class="container">
-        <h1> Our Photo Gallery</h1>
-        <div class="top-content">
-            <h3>Photo Gallery</h3>
-            <label for="check1">All</label>
-            <label for="check2">Crew</label>
-            <label for="check3">Food</label>
-            <label for="check4">Place</label>
+        <input type="radio" name="Photos" id="check1" checked>
+        <input type="radio" name="Photos" id="check2">
+        <input type="radio" name="Photos" id="check3">
+        <input type="radio" name="Photos" id="check4">
+
+        <div class="container">
+            <h1> Our Photo Gallery</h1>
+            <div class="top-content">
+                <h3>Photo Gallery</h3>
+                <label for="check1">All</label>
+                <label for="check2">Crew</label>
+                <label for="check3">Place</label>
+                <label for="check4">Food</label>
+            </div>
+
+            <div class="pics-container">
+                <?php
+                if (!empty($images)) {
+                    foreach ($images as $image) {
+                        echo '<div class="pic ' . $image['image_category'] . '">';
+                        echo '<img src="' . $image['image_src'] . '" alt="' . $image['image_alt'] . '">';
+                        echo '</div>';
+                    }
+                } else {
+                    echo '<p>No images found.</p>';
+                }
+                ?>
+            </div>
 
         </div>
+    </section>
 
-        <div class="photo-gallery">
-            <div class="pic crew">
-                <img src="img/crew1.jpg">
-            </div>
-            <div class="pic crew">
-                <img src="img/crew2.JPG">
-            </div>
-            <div class="pic crew">
-                <img src="img/crew3.JPG">
-            </div>
-            <div class="pic crew">
-                <img src="img/crew4.jpg">
-            </div>
-            <div class="pic crew">
-                <img src="img/crew5.jpg">
-            </div>
-            <div class="pic crew">
-                <img src="img/crew6.jpg">
-            </div>
-            <div class="pic crew">
-                <img src="img/crew7.jpg">
-            </div>
-            <div class="pic crew">
-                <img src="img/crew8.JPG">
-            </div>
-        <div class="pic place">
-            <img src="img/place1.jpg">
-        </div>
-        <div class="pic place">
-            <img src="img/place2.jpg">
-        </div>
-        <div class="pic food">
-            <img src="img/food1.jpg">
-        </div>
-        <div class="pic food">
-            <img src="img/food2.jpg">
-        </div>
-         
-         
-         
-        </div>
+    <script>
 
-    </div>
+            function handleRadioChange() {
+            const picsContainer = document.querySelector('.pics-container');
+            const radioButtons = document.querySelectorAll('input[name="Photos"]:checked');
+
+            if (radioButtons.length === 0) {
+                return;
+            }
+
+            const category = radioButtons[0].id.replace('check', ''); // Extract category number
+
+            const allPics = document.querySelectorAll('.pic');
+            allPics.forEach(pic => {
+                pic.style.display = 'none'; // Hide all images initially
+            });
+
+            if (category === '1') {
+                // Show all images when 'All' is selected
+                allPics.forEach(pic => {
+                    pic.style.display = 'block';
+                });
+            } else {
+                // Show images of the selected category
+                const categoryClass = `pic ${category}`;
+                const selectedPics = document.querySelectorAll(`.${categoryClass}`);
+                selectedPics.forEach(pic => {
+                    pic.style.display = 'block';
+                });
+            }
+        }
+
+            const radioButtons = document.querySelectorAll('input[name="Photos"]');
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', handleRadioChange);
+            });
+
+            handleRadioChange();
+    </script>
 
 <section class="review" id="review">
     <h3 class="sub-heading">people's review</h3>
