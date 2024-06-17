@@ -232,15 +232,15 @@ if (!empty($videoData['items'])) {
                         
     </div>
 </div>
+</section>
 
 <section class="about" id="about">
         <h3 class="sub-heading"> About Sugaree </h3>
         <h1 class="heading"> Why choose Sugaree? </h1>
 
         <div class="row">
-        <div class="image">
-            <div id="youtube-player"></div>
-        </div>
+            <div id="youtube-player">
+            </div>
 
 <script>
 
@@ -311,7 +311,6 @@ if (!empty($videoData['items'])) {
     </section>
 
     <section class="gallery" id="gallery">
-
         <input type="radio" name="Photos" id="check1" checked>
         <input type="radio" name="Photos" id="check2">
         <input type="radio" name="Photos" id="check3">
@@ -327,7 +326,7 @@ if (!empty($videoData['items'])) {
                 <label for="check4">Food</label>
             </div>
 
-            <div class="pics-container">
+            <div class="photo-gallery">
                 <?php
                 if (!empty($images)) {
                     foreach ($images as $image) {
@@ -362,15 +361,26 @@ if (!empty($videoData['items'])) {
             });
 
             if (category === '1') {
-                // Show all images when 'All' is selected
-                allPics.forEach(pic => {
+            // Show all images when 'All' is selected
+            allPics.forEach(pic => {
+                pic.style.display = 'block';
+                });
+            } else if (category === '2') {
+                // Show only 'Crew' images when 'Crew' is selected
+                const crewPics = document.querySelectorAll('.pic.crew');
+                crewPics.forEach(pic => {
                     pic.style.display = 'block';
                 });
-            } else {
-                // Show images of the selected category
-                const categoryClass = `pic ${category}`;
-                const selectedPics = document.querySelectorAll(`.${categoryClass}`);
-                selectedPics.forEach(pic => {
+            } else if (category === '3') {
+                // Show only 'Place' images when 'Place' is selected
+                const placePics = document.querySelectorAll('.pic.place');
+                placePics.forEach(pic => {
+                    pic.style.display = 'block';
+                });
+            } else if (category === '4') {
+                // Show only 'Food' images when 'Food' is selected
+                const foodPics = document.querySelectorAll('.pic.food');
+                foodPics.forEach(pic => {
                     pic.style.display = 'block';
                 });
             }

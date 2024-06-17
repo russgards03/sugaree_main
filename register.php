@@ -1,4 +1,4 @@
-<?php
+<?php/*
 include_once 'config/config.php';
 if(isset($_POST['submit'])){
     $user_firstname = $_POST['firstname'];
@@ -26,7 +26,7 @@ if(isset($_POST['submit'])){
             echo "Error Occurred: " . mysqli_error($con);
         }
     }
-}
+}*/
 ?>
 
 <!DOCTYPE html>
@@ -47,7 +47,7 @@ if(isset($_POST['submit'])){
 
 	<div id="login-block">
 		<h3>REGISTER</h3>
-		<form method="POST" action="">
+		<form method="POST" action="processes/process.user.php?action=new">
         <div class="field input">
 			<label for="firstname">First Name</label>
 			<input type="text" class="input" name="firstname" autocomplete="off" placeholder="Enter first name" required/>

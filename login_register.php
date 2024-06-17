@@ -1,7 +1,35 @@
 <?php
 include_once 'config/config.php';
+include_once 'class/class.user.php';
 
-if(isset($_POST['login_submit'])){
+/*Define Object*/
+$user = new User();
+
+/*Checks if the user inputs (username and password) matches with that of the database */
+/*if($user->get_session()){
+	header("location: index.php");
+}*/
+
+if($user->get_session()){
+	header("location: index.php");
+}
+
+if(isset($_REQUEST['login_submit'])){
+	extract($_REQUEST);
+	$login = $user->check_login($user_identifier,md5($user_password));
+	if($login){
+		header("location: index.php");
+	}else{
+		?>
+        <div id='error_box'>
+			<div id='error_notif'>Wrong username or password.</div>
+		</div>
+        <?php
+	}
+	
+}
+
+/*(if(isset($_POST['login_submit'])){
 	$user_identifier = mysqli_real_escape_string($con, $_POST['user_identifier']);
 	$user_password = mysqli_real_escape_string($con,$_POST['user_password']);
 
@@ -50,7 +78,7 @@ if(isset($_POST['register_submit'])){
             echo "Error Occurred: " . mysqli_error($con);
         }
     }
-}
+}*/
 ?>
 
 <!DOCTYPE html>
@@ -82,35 +110,35 @@ if(isset($_POST['register_submit'])){
                         <header>Login</header>
                     </div>
                     <form method="POST" action="">
-                    <div class="input-box">
-                        <input type="text" class="input-field" name="user_identifier" autocomplete="off" placeholder="Enter username or email" required>
-                        <i class="bx bx-user"></i>
-                    </div>
-                    <div class="input-box">
-                        <input type="password" class="input-field" name="user_password" autocomplete="off" placeholder="Password" required>
-                        <i class="bx bx-lock-alt"></i>
-                    </div>
-                    <div class="input-box">
-                        <input type="submit" class="submit" name="login_submit" value="Sign In">
-                    </div>
-                    <div class="two-col">
-                        <div class="one">
-                            <input type="checkbox" id="login-check">
-                            <label for="login-check"> Remember Me</label>
+                        <div class="input-box">
+                            <input type="text" class="input-field" name="user_identifier" autocomplete="off" placeholder="Enter username or email" required>
+                            <i class="bx bx-user"></i>
                         </div>
-                        <div class="two">
-                            <label><a href="#">Forgot Password?</a> </label>
+                        <div class="input-box">
+                            <input type="password" class="input-field" name="user_password" autocomplete="off" placeholder="Password" required>
+                            <i class="bx bx-lock-alt"></i>
                         </div>
-                    </div>
-                </div>
+                        <div class="input-box">
+                            <input type="submit" class="submit" name="login_submit" value="Sign In">
+                        </div>
+                        <div class="two-col">
+                            <div class="one">
+                                <input type="checkbox" id="login-check">
+                                <label for="login-check"> Remember Me</label>
+                            </div>
+                            <div class="two">
+                                <label><a href="#">Forgot Password?</a> </label>
+                            </div>
+                        </div>
                     </form>
+                </div>
               
                 <div class="register-container" id="register">
                     <div class="top">
                         <span>Have an account? <a href="#" onclick="login()">Login</a></span>
                         <header>Sign Up</header>
                     </div>
-                    <form method="POST" action="">
+                    <form method="POST" action="process/process.user.php?action=new">
                     <div class="two-forms">
                         <div class="input-box">
                             <input type="text" class="input-field" name="firstname" autocomplete="off" placeholder="Firstname" required>
@@ -201,10 +229,12 @@ if(isset($_POST['register_submit'])){
                         <div class="one">
                             <input type="checkbox" id="register-check">
                             <label for="register-check"> Remember Me</label>
+                            <span>Have an account? <a href="#" onclick="index.php">Login</a></span>
                         </div>
                         <div class="two">
                             <label><a href="#">Terms & Conditions</a> </label>
                         </div>
+                        
                     </div>
                 </div>
             </div>

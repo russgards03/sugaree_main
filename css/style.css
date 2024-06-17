@@ -392,6 +392,10 @@ header .icons #menu-bars {
     left: 1.5rem;
 }
 
+.about {
+    background-color: #f5f5f5;
+}
+
 .about .row {
     display: flex;
     flex-wrap: wrap;
@@ -399,8 +403,9 @@ header .icons #menu-bars {
     align-items: center;
 }
 
-.about .row .image img {
+.about .row #youtube-player {
     width: 100%;
+    align-items: center;
 }
 
 .about .row .content {
