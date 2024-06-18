@@ -18,12 +18,10 @@ try {
     $stmtImages = $pdo->query("SELECT * FROM tbl_images");
     $images = $stmtImages->fetchAll(PDO::FETCH_ASSOC);
 
-    $stmtReviews = $pdo->query("SELECT r.*, u.user_firstname 
+    $stmtReviews = $pdo->query("SELECT r.*, u.user_firstname, u.user_lastname 
                                   FROM tbl_review r 
                                   INNER JOIN tbl_users u ON r.user_id = u.user_id");
     $review = $stmtReviews->fetchAll(PDO::FETCH_ASSOC);
-
-   
 
 } catch (PDOException $e) {
     echo 'Connection failed: ' . $e->getMessage();
@@ -424,14 +422,29 @@ if (!empty($videoData['items'])) {
                                 <h3><?php echo htmlspecialchars($review['user_firstname']); ?></h3>
                                 <div class="stars">
                                     <?php 
-                                    // Assuming review_rating is an integer from 1 to 5
-                                    $rating = doubleval($review['review_rating']);
-                                    for ($i = 1; $i <= 5; $i++) {
-                                        if ($i <= $rating) {
-                                            echo '<i class="fas fa-star"></i>';
-                                        } else {
-                                            echo '<i class="far fa-star"></i>';
-                                        }
+                                    // Assuming review_rating is a float from 1 to 5
+                                    $rating = floatval($review['review_rating']);
+                                    
+                                    // Determine whole stars (integer part)
+                                    $wholeStars = floor($rating);
+                                    
+                                    // Determine fractional star (if any)
+                                    $fractionalStar = $rating - $wholeStars;
+                                    
+                                    // Display whole stars
+                                    for ($i = 1; $i <= $wholeStars; $i++) {
+                                        echo '<i class="fas fa-star"></i>';
+                                    }
+                                    
+                                    // Display fractional star if needed
+                                    if ($fractionalStar > 0) {
+                                        echo '<i class="fas fa-star-half-alt"></i>'; // or any other half star icon
+                                    }
+                                    
+                                    // Display remaining empty stars (if any)
+                                    $emptyStars = 5 - ceil($rating); // ceil to get the number of empty stars needed
+                                    for ($i = 1; $i <= $emptyStars; $i++) {
+                                        echo '<i class="far fa-star"></i>';
                                     }
                                     ?>
                                 </div>

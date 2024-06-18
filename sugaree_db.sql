@@ -30,13 +30,6 @@ CREATE TABLE `tbl_specialties` (
   PRIMARY KEY (`specialty_id`)
 );
 
-INSERT INTO tbl_specialties (`specialty_title` ,`specialty_desc` ,`specialty_img` ,`specialty_alt` ) 
-VALUES
-  ("Pizza", "Originating from Italy but cherished worldwide, pizza is a universal symbol of comfort and culinary craftsmanship.", "img/Pizza.png", "img/Pizza.png"),
-  ("Gelato", "Indulge in the exquisite world of gelato, a heavenly Italian frozen dessert that captivates with its luxurious texture and intense flavors. Unlike conventional ice cream, gelato offers a velvety-smooth experience that melts on your tongue, leaving a lingering sensation of creamy delight.", "img/Gelato.png", "img/Gelato.png"),
-  ("Croissant", "Picture a golden-brown crescent-shaped delight, freshly baked and irresistibly fragrant, waiting to be savored.", "img/Croissant.png", "img/Croissant.png")
-;
-
 DROP TABLE IF EXISTS `tbl_images`;
 CREATE TABLE `tbl_images` (
   `image_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -51,9 +44,19 @@ CREATE TABLE `tbl_review` (
   `review_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) unsigned NOT NULL,
   `review_content` varchar(255) NOT NULL,
-  `review_rating` varchar(255) NOT NULL,
+  `review_rating` float(11) NOT NULL,
   PRIMARY KEY (`review_id`)
 );
+
+
+
+
+INSERT INTO tbl_specialties (`specialty_title` ,`specialty_desc` ,`specialty_img` ,`specialty_alt` ) 
+VALUES
+  ("Pizza", "Originating from Italy but cherished worldwide, pizza is a universal symbol of comfort and culinary craftsmanship.", "img/Pizza.png", "img/Pizza.png"),
+  ("Gelato", "Indulge in the exquisite world of gelato, a heavenly Italian frozen dessert that captivates with its luxurious texture and intense flavors. Unlike conventional ice cream, gelato offers a velvety-smooth experience that melts on your tongue, leaving a lingering sensation of creamy delight.", "img/Gelato.png", "img/Gelato.png"),
+  ("Croissant", "Picture a golden-brown crescent-shaped delight, freshly baked and irresistibly fragrant, waiting to be savored.", "img/Croissant.png", "img/Croissant.png")
+;
 
 INSERT INTO `tbl_images` (`image_src`, `image_alt`, `image_category`)
 VALUES
