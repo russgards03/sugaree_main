@@ -1,15 +1,30 @@
 <?php
 include 'config/config.php';
+include_once 'class/class.user.php';
+
+$user = new User();
+
+$user_identifier = $_SESSION['user_identifier'];
+$user_id = $user->get_user_id($user_identifier);
+$user_firstname = $user->get_user_fname($user_id);
 
 try {
     $pdo = new PDO("mysql:host=" . DB_SERVER . ";dbname=" . DB_DATABASE, DB_USERNAME, DB_PASSWORD);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $stmtspecialties = $pdo->query("SELECT * FROM tbl_specialties");
-    $specialties = $stmtspecialties->fetchAll(PDO::FETCH_ASSOC);
+    $stmtSpecialties = $pdo->query("SELECT * FROM tbl_specialties");
+    $specialties = $stmtSpecialties->fetchAll(PDO::FETCH_ASSOC);
 
     $stmtImages = $pdo->query("SELECT * FROM tbl_images");
     $images = $stmtImages->fetchAll(PDO::FETCH_ASSOC);
+
+    $stmtReviews = $pdo->query("SELECT r.*, u.user_firstname 
+                                  FROM tbl_review r 
+                                  INNER JOIN tbl_users u ON r.user_id = u.user_id");
+    $review = $stmtReviews->fetchAll(PDO::FETCH_ASSOC);
+
+   
+
 } catch (PDOException $e) {
     echo 'Connection failed: ' . $e->getMessage();
     exit();
@@ -250,7 +265,7 @@ if (!empty($videoData['items'])) {
         const player = new YT.Player('youtube-player', {
             height: '750',
             width: '1500',
-            videoId: '48bVT1KD78I', 
+            videoId: 'oC5KWOCHb7g', 
             playerVars: {
                 'autoplay': 0, 
                 'loop': 1,     
@@ -395,127 +410,39 @@ if (!empty($videoData['items'])) {
     </script>
 
 <section class="review" id="review">
-    <h3 class="sub-heading">people's review</h3>
-    <h1 class="heading">what they think</h1>
-    <div class="swiper-container review-slider">
-        <div class="swiper-wrapper">
-            <div class="swiper-slide slide">
-                <i class="fas fa-quote-right"></i>
-                <div class="user">
-                    <img src="img/russ.jpg" alt="">
-                    <div class="user-info">
-                        <h3>Russ Allen Garde</h3>
-                        <div class="stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
+        <h3 class="sub-heading">People's Reviews</h3>
+        <h1 class="heading">What They Think</h1>
+        <div class="swiper-container review-slider">
+            <div class="swiper-wrapper">
+                <?php foreach ($review as $review): ?>
+                    <div class="swiper-slide slide">
+                        <i class="fas fa-quote-right"></i>
+                        <div class="user">
+                            <!-- You can customize the user info based on your database structure -->
+                            <img src="img/user.jpg" alt="">
+                            <div class="user-info">
+                                <h3><?php echo htmlspecialchars($review['user_firstname']); ?></h3>
+                                <div class="stars">
+                                    <?php 
+                                    // Assuming review_rating is an integer from 1 to 5
+                                    $rating = doubleval($review['review_rating']);
+                                    for ($i = 1; $i <= 5; $i++) {
+                                        if ($i <= $rating) {
+                                            echo '<i class="fas fa-star"></i>';
+                                        } else {
+                                            echo '<i class="far fa-star"></i>';
+                                        }
+                                    }
+                                    ?>
+                                </div>
+                            </div>
                         </div>
+                        <p><?php echo htmlspecialchars($review['review_content']); ?></p>
                     </div>
-                </div>
-                <p>Their gelato is divine, with a creamy texture and intense flavors. I also love their pizzas - they're thin crust and perfectly baked. 
-                    Whether you're in the mood for gelato or pizza, Sugaree has something delicious for everyone.</p>
-            </div>
-            <div class="swiper-slide slide">
-                <i class="fas fa-quote-right"></i>
-                <div class="user">
-                    <img src="img/rom.jpg" alt="">
-                    <div class="user-info">
-                        <h3>Romeo Seva III</h3>
-                        <div class="stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                        </div>
-                    </div>
-                </div>
-                <p>Sugaree is my favorite spot to satisfy my sweet cravings in the City. 
-                    Their gelato is top-notch, with flavors that transport you to Italy. The croissants are also amazing - buttery and flaky.</p>
-            </div>
-            <div class="swiper-slide slide">
-                <i class="fas fa-quote-right"></i>
-                <div class="user">
-                    <img src="img/deng.jpg" alt="">
-                    <div class="user-info">
-                        <h3>Andrea Gerome</h3>
-                        <div class="stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                    </div>
-                </div>
-                <p>I can't get enough of Sugaree's gelato! It's the perfect treat on a hot day. 
-                    Their pastries, especially the croissants, are also incredible. The atmosphere is cozy, and the staff is always friendly. </p>
-            </div>
-            <div class="swiper-slide slide">
-                <i class="fas fa-quote-right"></i>
-                <div class="user">
-                    <img src="img/juju.jpg" alt="">
-                    <div class="user-info">
-                        <h3>Julianne Silawan</h3>
-                        <div class="stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                    </div>
-                </div>
-                <p>Sugaree has become my go-to spot for delicious treats in Bacolod. Their gelato is creamy and rich, and they offer a wide variety of flavors to choose from. T
-                    he croissants are also a must-try - they're baked to perfection! Sugaree never disappoints.</p>
-            </div>
-            <div class="swiper-slide slide">
-                <i class="fas fa-quote-right"></i>
-                <div class="user">
-                    <img src="img/lek2.jpg" alt="">
-                    <div class="user-info">
-                        <h3>Lexxy Lain Villa</h3>
-                        <div class="stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                        </div>
-                    </div>
-                </div>
-                <p>Sugaree is a hidden gem in Bacolod! Their gelato is out of this world, with unique flavors that you won't find anywhere else. I also love their croissants, which are flaky and buttery.
-                     Whether you're in the mood for gelato or pastries, Sugaree is the place to be!</p>
-            </div>
-            <div class="swiper-slide slide">
-                <i class="fas fa-quote-right"></i>
-                <div class="user">
-                    <img src="img/yna.jpg" alt="">
-                    <div class="user-info">
-                        <h3>Ma. Yna Maurich Gellaco</h3>
-                        <div class="stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                        </div>
-                    </div>
-                </div>
-                <p>The food is good. It seems like a place out of the 1990s where I can chill and enjoy it's ambience. 
-                    They are also customer-friendly. I recommend this place so much!
-                </p>
+                <?php endforeach; ?>
             </div>
         </div>
-    </div>
-</section>
-</div>
-
-    </div>
-
-</section>
+    </section>
 
 <section class="footer">
 
