@@ -15,6 +15,10 @@ try {
     $stmtSpecialties = $pdo->query("SELECT * FROM tbl_specialties");
     $specialties = $stmtSpecialties->fetchAll(PDO::FETCH_ASSOC);
 
+    $stmtDishes = $pdo->prepare("SELECT * FROM tbl_dishes WHERE dish_popularity = :popularity");
+    $stmtDishes->execute(['popularity' => 'popular']);
+    $dishes = $stmtDishes->fetchAll(PDO::FETCH_ASSOC);
+
     $stmtImages = $pdo->query("SELECT * FROM tbl_images");
     $images = $stmtImages->fetchAll(PDO::FETCH_ASSOC);
 
@@ -124,128 +128,21 @@ if (!empty($videoData['items'])) {
             </div>
         </section>
 
+        <section class="dishes" id="dishes">
+        <h3 class="sub-heading"> Our Dishes </h3>
+        <h3 class="heading"> Popular Dishes </h3>
 
-<section class="dishes"  id="dishes">
-
-
-<h3 class="sub-heading"> Our Dishes </h3>
-<h3 class="heading"> Popular Dishes </h3>
-
-<div class="box-container">
-
-    <div class="box">
-        <a href="#" class="fas fa-heart"></a>
-        <a href="#" class="fas fa-eye"></a>
-        <img src="img/Croissant.png" alt="">
-        <h3>Croissant</h3>
-        <div class="stars">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star-half-alt"></i>
-        </div>
-        <span>PHP 85.50 </span>
-        <a href="menu.php" class="btn">Go to Menu</a>
-        </div>
-
-        <div class="box">
-            <a href="#" class="fas fa-heart"></a>
-            <a href="#" class="fas fa-eye"></a>
-            <img src="img/Pizza.png" alt="">
-            <h3>Pizza</h3>
-            <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star-half-alt"></i>
-            </div>
-
-            <span>PHP 399.50 </span>
-            <a href="menu.php" class="btn">Go to Menu</a>
-            </div>
-            <div class="box">
-                <a href="#" class="fas fa-heart"></a>
-                <a href="#" class="fas fa-eye"></a>
-                <img src="img/Gelato.png" alt="">
-                <h3>Gelato</h3>
-                <div class="stars">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
-                </div>
-                <span>PHP 120.99 </span>
-                <a href="menu.php" class="btn">Go to Menu</a>
-                </div>
+            <div class="box-container">
+                <?php foreach ($dishes as $dish): ?>
                 <div class="box">
-                    <a href="#" class="fas fa-heart"></a>
-                    <a href="#" class="fas fa-eye"></a>
-                    <img src="img/Strawberry.png" alt="">
-                    <h3>Strawberry</h3>
-                    <div class="stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
-                    </div>
-                    <span>PHP 180.99 </span>
-                    <a href="menu.php" class="btn">Go to Menu</a>
-                    </div>
-                    <div class="box">
-                        <a href="#" class="fas fa-heart"></a>
-                        <a href="#" class="fas fa-eye"></a>
-                        <img src="img/Cappucino.png" alt="">
-                        <h3>Cappucino</h3>
-                        <div class="stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                        </div>
-                        <span>PHP 150.99 </span>
-                        <a href="menu.php" class="btn">Go to Menu</a>
-                        </div>
-                        <div class="box">
-                            <a href="#" class="fas fa-heart"></a>
-                            <a href="#" class="fas fa-eye"></a>
-                            <img src="img/Cupcake.png" alt="">
-                            <h3>Cupcake</h3>
-                            <div class="stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                            </div>
-                            <span>PHP 60.50 </span>
-                            <a href="#" class="btn">Go to Menu</a>
-                            </div>
-                            <div class="box">
-                                <a href="#" class="fas fa-heart"></a>
-                                <a href="#" class="fas fa-eye"></a>
-                                <img src="img/Cinnamon.png" alt="">
-                                <h3>Cinnamon</h3>
-                                <div class="stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
-                                </div>
-                                <span>PHP 90.00 </span>
-                                <a href="#" class="btn">Go to Menu</a>
-                                </div>
-                            </div>
-                        
-                        
-    </div>
-</div>
-</section>
+                    <img src="<?php echo htmlspecialchars($dish['dish_img']); ?>" alt="">
+                    <h3><?php echo htmlspecialchars($dish['dish_name']); ?></h3>
+                    <span>₱ <?php echo number_format($dish['dish_price'], 2); ?></span>
+                    <a href="menu.php?category=<?php echo urlencode($dish['dish_category']); ?>" class="btn">Go to Menu</a>
+                </div>
+                <?php endforeach; ?>
+            </div>
+        </section>
 
 <section class="about" id="about">
         <h3 class="sub-heading"> About Sugaree </h3>

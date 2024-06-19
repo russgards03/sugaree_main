@@ -16,7 +16,9 @@ CREATE TABLE `tbl_dishes` (
   `dish_id` int(11) NOT NULL AUTO_INCREMENT,
   `dish_name` varchar(255) NOT NULL,
   `dish_img` varchar(255) NOT NULL,
-  `dish_price` int(255) NOT NULL,
+  `dish_price` float(11) NOT NULL,
+  `dish_popularity` varchar(255) NOT NULL,
+  `dish_category` varchar(255) NOT NULL,
   PRIMARY KEY (`dish_id`)
 );
 
@@ -58,7 +60,18 @@ VALUES
   ("Croissant", "Picture a golden-brown crescent-shaped delight, freshly baked and irresistibly fragrant, waiting to be savored.", "img/Croissant.png", "img/Croissant.png")
 ;
 
-INSERT INTO `tbl_images` (`image_src`, `image_alt`, `image_category`)
+INSERT into tbl_dishes (`dish_id`, `dish_name`, `dish_img`, `dish_price`, `dish_category`, `dish_popularity`) 
+VALUES 
+(NULL, "Croissant", "https://raw.githubusercontent.com/russgards03/sugaree/main/img/Croissant.png", "89.90", "Pastry", "Popular"),
+(NULL, "Pepperoni Pizza", "https://raw.githubusercontent.com/russgards03/sugaree/main/img/Pizza.png", "89.90", "Pizza", "Popular"), 
+(NULL, "Cappucino", "https://raw.githubusercontent.com/russgards03/sugaree/main/img/Cappucino.png", "99.99", "Coffee", "Popular"), 
+(NULL, "Cupcake", "https://raw.githubusercontent.com/russgards03/sugaree/main/img/Cupcake.png", "89.90", "Pastry", "Popular"), 
+(NULL, "Gelato", "https://raw.githubusercontent.com/russgards03/sugaree/main/img/Gelato.png", "89.90", "Gelato", "Popular"), 
+(NULL, "Four Cheese Pizza", "https://raw.githubusercontent.com/russgards03/sugaree/main/img/Pizza.png",  "89.90", "Pizza", "Popular"), 
+(NULL, "Strawberry Cake", "https://raw.githubusercontent.com/russgards03/sugaree/main/img/Strawberry.png", "89.90", "Pastry", "Popular");
+;
+
+INSERT INTO tbl_images (`image_src`, `image_alt`, `image_category`)
 VALUES
   ('https://raw.githubusercontent.com/RJSeebs02/sugaree_img/main/crew/crew1.jpg', 'Crew member 1', 'crew'),
   ('https://raw.githubusercontent.com/RJSeebs02/sugaree_img/main/crew/crew2.jpg', 'Crew member 2', 'crew'),
