@@ -305,54 +305,68 @@ if (!empty($videoData['items'])) {
     </script>
 
 <section class="review" id="review">
-        <h3 class="sub-heading">People's Reviews</h3>
-        <h1 class="heading">What They Think</h1>
-        <div class="swiper-container review-slider">
-            <div class="swiper-wrapper">
-                <?php foreach ($review as $review): ?>
-                    <div class="swiper-slide slide">
-                        <i class="fas fa-quote-right"></i>
-                        <div class="user">
-                            <!-- You can customize the user info based on your database structure -->
-                            <img src="img/user.jpg" alt="">
-                            <div class="user-info">
-                                <h3><?php echo htmlspecialchars($review['user_firstname']); ?></h3>
-                                <div class="stars">
-                                    <?php 
-                                    // Assuming review_rating is a float from 1 to 5
-                                    $rating = floatval($review['review_rating']);
-                                    
-                                    // Determine whole stars (integer part)
-                                    $wholeStars = floor($rating);
-                                    
-                                    // Determine fractional star (if any)
-                                    $fractionalStar = $rating - $wholeStars;
-                                    
-                                    // Display whole stars
-                                    for ($i = 1; $i <= $wholeStars; $i++) {
-                                        echo '<i class="fas fa-star"></i>';
-                                    }
-                                    
-                                    // Display fractional star if needed
-                                    if ($fractionalStar > 0) {
-                                        echo '<i class="fas fa-star-half-alt"></i>'; // or any other half star icon
-                                    }
-                                    
-                                    // Display remaining empty stars (if any)
-                                    $emptyStars = 5 - ceil($rating); // ceil to get the number of empty stars needed
-                                    for ($i = 1; $i <= $emptyStars; $i++) {
-                                        echo '<i class="far fa-star"></i>';
-                                    }
-                                    ?>
-                                </div>
+    <h3 class="sub-heading">People's Reviews</h3>
+    <h1 class="heading">What They Think</h1>
+    <div class="swiper-container review-slider">
+        <div class="swiper-wrapper">
+            <?php foreach ($review as $review): ?>
+                <div class="swiper-slide slide">
+                    <i class="fas fa-quote-right"></i>
+                    <div class="user">
+                        <?php
+                        // Fetch user image path based on user_id from the review
+                        $reviewer_id = $review['user_id'];
+                        $res = mysqli_query($con, "SELECT user_image FROM tbl_users WHERE user_id = $reviewer_id");
+                        if ($res && mysqli_num_rows($res) > 0) {
+                            $row = mysqli_fetch_assoc($res);
+                            $user_image_path = 'img/' . $row['user_image'];
+                            if (file_exists($user_image_path)) {
+                                echo '<img src="' . $user_image_path . '" alt="">';
+                            } else {
+                                echo '<p>Image not found: ' . htmlspecialchars($user_image_path) . '</p>';
+                            }
+                        } else {
+                            echo '<p>No image found for this reviewer.</p>';
+                        }
+                        ?>
+                        <div class="user-info">
+                            <h3><?php echo htmlspecialchars($review['user_firstname']); ?></h3>
+                            <div class="stars">
+                                <?php 
+                                // Assuming review_rating is a float from 1 to 5
+                                $rating = floatval($review['review_rating']);
+                                
+                                // Determine whole stars (integer part)
+                                $wholeStars = floor($rating);
+                                
+                                // Determine fractional star (if any)
+                                $fractionalStar = $rating - $wholeStars;
+                                
+                                // Display whole stars
+                                for ($i = 1; $i <= $wholeStars; $i++) {
+                                    echo '<i class="fas fa-star"></i>';
+                                }
+                                
+                                // Display fractional star if needed
+                                if ($fractionalStar > 0) {
+                                    echo '<i class="fas fa-star-half-alt"></i>'; // or any other half star icon
+                                }
+                                
+                                // Display remaining empty stars (if any)
+                                $emptyStars = 5 - ceil($rating); // ceil to get the number of empty stars needed
+                                for ($i = 1; $i <= $emptyStars; $i++) {
+                                    echo '<i class="far fa-star"></i>';
+                                }
+                                ?>
                             </div>
                         </div>
-                        <p><?php echo htmlspecialchars($review['review_content']); ?></p>
                     </div>
-                <?php endforeach; ?>
-            </div>
+                    <p><?php echo htmlspecialchars($review['review_content']); ?></p>
+                </div>
+            <?php endforeach; ?>
         </div>
-    </section>
+    </div>
+</section>
 
 <section class="footer">
 
@@ -360,7 +374,7 @@ if (!empty($videoData['items'])) {
     <div class="box-container">
         <div class="box">
             <h3>locations</h3>
-            <a href="#">Bacolod City</a>
+            <a href="https://maps.app.goo.gl/9VYrGqDbsh3KBwym7" target="_blank">Bacolod City</a>
 
         </div>
 

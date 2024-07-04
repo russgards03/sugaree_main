@@ -1,0 +1,214 @@
+/* Existing CSS */
+
+/* Body background gradient */
+body {
+    background: linear-gradient(135deg, #f8d3a5, #f76c6c, #b094f7);
+}
+
+/* Profile container */
+.emp-profile {
+    padding: 3%;
+    margin-top: 3%;
+    margin-bottom: 3%;
+    border-radius: 0.5rem;
+    background: #fff;
+}
+
+/* Profile image */
+.profile-img {
+    text-align: center;
+}
+
+.profile-img img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-img .file {
+    position: relative;
+    overflow: hidden;
+    margin-top: -20%;
+    width: 70%;
+    border: none;
+    border-radius: 0;
+    font-size: 15px;
+    background: #212529b8;
+}
+
+.profile-img .file input {
+    position: absolute;
+    opacity: 0;
+    right: 0;
+    top: 0;
+}
+
+/* Profile header */
+.profile-head h5 {
+    color: #333;
+}
+
+.profile-head h6 {
+    color: #0062cc;
+}
+
+/* Edit profile button */
+.profile-edit-btn {
+    border: none;
+    border-radius: 1.5rem;
+    width: 70%;
+    padding: 2%;
+    font-weight: 600;
+    color: #6c757d;
+    cursor: pointer;
+}
+
+/* Profile rating */
+.proile-rating {
+    font-size: 12px;
+    color: #818182;
+    margin-top: 5%;
+}
+
+.proile-rating span {
+    color: #495057;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+/* Profile tab styling */
+.profile-head .nav-tabs {
+    margin-bottom: 5%;
+}
+
+.profile-head .nav-tabs .nav-link {
+    font-weight: 600;
+    border: none;
+}
+
+.profile-head .nav-tabs .nav-link.active {
+    border: none;
+    border-bottom: 2px solid #0062cc;
+}
+
+/* Profile work section */
+.profile-work {
+    padding: 14%;
+    margin-top: -15%;
+}
+
+.profile-work p {
+    font-size: 12px;
+    color: #818182;
+    font-weight: 600;
+    margin-top: 10%;
+}
+
+.profile-work a {
+    text-decoration: none;
+    color: #495057;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.profile-work ul {
+    list-style: none;
+}
+
+/* Profile tab label */
+.profile-tab label {
+    font-weight: 600;
+}
+
+.profile-tab p {
+    font-weight: 600;
+    color: #0062cc;
+}
+
+/* New CSS for Review Section */
+
+/* Container for review form */
+.container {
+    margin-top: 30px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+/* Header for review form */
+.container h3 {
+    font-size: 24px;
+    color: #343a40;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Form group for comment */
+.container .form-group {
+    margin-bottom: 20px;
+}
+
+/* Rating section styling */
+.container #rating {
+    margin-bottom: 20px;
+}
+
+/* Result styling */
+.container .result {
+    display: block;
+    margin-top: 5px;
+    font-style: italic;
+    font-size: 14px;
+    color: #6c757d;
+}
+
+/* Submit button styling */
+.container input[type="submit"] {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.container input[type="submit"]:hover {
+    background-color: #c82333;
+    border-color: #c82333;
+}
+.review-box {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.review-box h3 {
+    color: #333;
+    text-align: center;
+}
+
+.review-textarea {
+    min-height: 150px; /* Adjust height as needed */
+    resize: vertical; /* Allow vertical resizing */
+}
+
+.rateyo {
+    margin-bottom: 20px;
+}
+
+.result {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.btn-lg {
+    padding: 12px 32px; /* Adjust button padding */
+    font-size: 18px; /* Adjust button font size */
+}
+

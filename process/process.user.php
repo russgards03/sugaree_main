@@ -27,6 +27,7 @@ function create_new_user(){
     $user_name = $_POST['username'];
     $user_email = $_POST['email'];
     $user_password = $_POST['password'];
+    $user_status = $_POST['status'];
 
     $password = md5($user_password);
 
@@ -38,31 +39,25 @@ function create_new_user(){
         header("location: ../login_register.php");
     } else {
         /* Pass the parameters to the class function */
-        $result = $user->new_user($user_firstname,$user_lastname,$user_name,$user_email,$password);
+        $result = $user->new_user($user_firstname,$user_lastname,$user_name,$user_email,$password,$user_status);
         if($result){
-            header("location: ../index.php");
+            header("location: ../login_register.php");
         }
     }
 }
 
 /*Main Function Process for updating an admin */
 function update_user(){  
-    $admin = new User();
+    $user = new User();
     /*Receives the parameters passed from the profile updating page form */
-    $username = $_POST['adm_username'];
-    $password = $_POST['adm_password'];
-    $email = $_POST['adm_email'];
-    $fname = ucfirst($_POST['adm_fname']);
-    $lname = ucfirst($_POST['adm_lname']);
-    $cnumber = $_POST['adm_cnumber'];
-    $access = $_POST['adm_access'];
+    $user_id = $_POST['userid'];
+    $user_firstname = ucfirst($_POST['firstname']);
+    $user_lastname = ucfirst($_POST['lastname']);
     
-    $password = md5($password);
-
     /*Passes the parameters to the class function */
-    $result = $admin->update_admin($username,$password,$email,$fname,$lname,$cnumber,$access);
+    $result = $user->update_user($user_id,$user_firstname,$user_lastname);
     if($result){
-        header('location: ../index.php?page=admins&subpage=records&id='.$username);
+        header("location: ../profile.php");
     }
 }
 
@@ -75,6 +70,19 @@ function delete_admin(){
         if ($result) {
             header("location: ../index.php?page=admins");
         } 
+    }
+}
+
+function update_user_image(){
+    $user = new User();
+    /*Receives the parameters passed from the profile updating page form*/
+    $user_id = $_POST['userid'];
+    $user_image = $_POST['image'];
+
+    /*Passes the parameters to the class function*/
+    $result = $user->update_user($user_id,$user_image);
+    if($result){
+        header("location: ../profile.php");
     }
 }
 

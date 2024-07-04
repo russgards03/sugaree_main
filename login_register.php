@@ -2,83 +2,31 @@
 include_once 'config/config.php';
 include_once 'class/class.user.php';
 
-/*Define Object*/
+/* Define Object */
 $user = new User();
 
-/*Checks if the user inputs (username and password) matches with that of the database */
-/*if($user->get_session()){
-	header("location: index.php");
-}*/
-
+/* Check if the user is already logged in */
 if($user->get_session()){
-	header("location: index.php");
+    header("location: index.php");
+    exit();
 }
 
 if(isset($_REQUEST['login_submit'])){
-	extract($_REQUEST);
-	$login = $user->check_login($user_identifier,md5($user_password));
-	if($login){
-		header("location: index.php");
-	}else{
-		?>
-        <div id='error_box'>
-			<div id='error_notif'>Wrong username or password.</div>
-		</div>
-        <?php
-	}
-	
-}
-
-/*(if(isset($_POST['login_submit'])){
-	$user_identifier = mysqli_real_escape_string($con, $_POST['user_identifier']);
-	$user_password = mysqli_real_escape_string($con,$_POST['user_password']);
-
-	$result = mysqli_query($con, "SELECT * FROM tbl_users WHERE user_email='$user_identifier' OR user_name='$user_identifier' AND user_password='$user_password'") or die ("Error");
-	$row = mysqli_fetch_assoc($result);
-
-	if(is_array($row) && ! empty($row)){
-		$_SESSION['valid'] = $row['user_email'];
-		$_SESSION['user_firstname'] = $row['user_firstname'];
-		$_SESSION['user_lastname'] = $row['user_lastname'];
-		$_SESSION['user_name'] = $row['user_name'];
-		$_SESSION['id'] = $row['id'];
-	}else{
-		echo "<div class='message'
-		<p> Wrong Username or Password <p>
-		</div> <br> ";
-		echo "<a href='login.php'><button class='btn'>Go back</button>";
-	}
-	if(isset($_SESSION['valid'])){
-		header("Location: index.php");
-	}
-}
-
-if(isset($_POST['register_submit'])){
-    $user_firstname = $_POST['firstname'];
-    $user_lastname = $_POST['lastname'];
-    $user_name = $_POST['username'];
-    $user_email = $_POST['email'];
-    $user_password = $_POST['password'];
-
-    $verify_query = mysqli_query($con, "SELECT user_email FROM tbl_users WHERE user_email='$user_email'");
-
-    if(mysqli_num_rows($verify_query) != 0){
-        echo "<div class='message'>
-            <p> This email is already in use. Try another one. </p>
-            </div> <br>";
-        echo "<a href='javascript:self.history.back()'><button class='btn'>Go back</button></a>";
+    extract($_REQUEST);
+    $login = $user->check_login($user_identifier, md5($user_password));
+    if($login){
+        // Set session variable
+        $_SESSION['username'] = $user_identifier;
+        header("location: index.php");
+        exit();
     } else {
-        $insert_query = "INSERT INTO tbl_users(user_firstname, user_lastname, user_name, user_email, user_password) VALUES('$user_firstname', '$user_lastname', '$user_name', '$user_email', '$user_password')";
-        
-        if(mysqli_query($con, $insert_query)){
-            echo "<div class='message'>
-                <p> Registration complete! </p>
-                </div> <br>";
-        } else {
-            echo "Error Occurred: " . mysqli_error($con);
-        }
+        ?>
+        <div id='error_box'>
+            <div id='error_notif'>Wrong username or password.</div>
+        </div>
+        <?php
     }
-}*/
+}
 ?>
 
 <!DOCTYPE html>
@@ -159,6 +107,7 @@ if(isset($_POST['register_submit'])){
                     <div class="input-box">
                         <input type="password" class="input-field" name="password" autocomplete="off" placeholder="Password" required>
                         <i class="bx bx-lock-alt"></i>
+                        <input type="hidden" value="Not yet reviewed" class="text" name="status" placeholder="Not yet reviewed" readonly>
 
                         <script>
                             var myInput = document.getElementById("password");

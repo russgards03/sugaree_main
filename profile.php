@@ -7,9 +7,12 @@ $user = new User();
 
 /* Checks if the user is logged in */
 if(!$user->get_session()){
-	header("location: login_register.php");
-	exit();
+    header("location: login_register.php");
+    exit();
 }
+
+/*Parameter variables for the navbar*/
+$subpage = (isset($_GET['subpage']) && $_GET['subpage'] != '') ? $_GET['subpage'] : '';
 
 /* Get user logged in details */
 $user_identifier = $_SESSION['user_identifier'];
@@ -18,10 +21,13 @@ $user_name = $user->get_user_name($user_id);
 $user_email = $user->get_user_email($user_id);
 $user_firstname = $user->get_user_fname($user_id);
 $user_lastname = $user->get_user_lname($user_id);
+$user_review = $user->get_user_review($user_id);
+$user_rating = $user->get_user_rating($user_id);
+$user_status = $user->get_user_status($user_id);
 
-/* Process form submission */
+/* Process form submission 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $review_rating = $_POST['rating'];
+    $review_rating = $_POST['Rating'];
     $review_content = $_POST['content'];
 
     // Basic validation
@@ -34,77 +40,151 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             die("Connection failed: " . $con->connect_error);
         }
 
+        // Prepare and execute the insert statement
         $stmt = $con->prepare("INSERT INTO tbl_review (user_id, review_rating, review_content) VALUES (?, ?, ?)");
         $stmt->bind_param("ids", $user_id, $review_rating, $review_content);
 
         if ($stmt->execute()) {
-            echo "Review added successfully";
-            header("Location: profile.php"); // Redirect after successful submission
-            exit();
+            // Prepare and execute the update statement
+            $stmt2 = $con->prepare("UPDATE tbl_users SET user_status = ? WHERE user_id = ?");
+            $user_status = "Reviewed";
+            $stmt2->bind_param("si", $user_status, $user_id);
+
+            if ($stmt2->execute()) {
+                echo "Review added and user status updated successfully";
+                header("Location: profile.php"); // Redirect after successful submission
+                exit();
+            } else {
+                echo "Error updating user status: " . $stmt2->error;
+            }
+
+            $stmt2->close();
         } else {
-            echo "Error: " . $stmt->error;
+            echo "Error adding review: " . $stmt->error;
         }
 
         $stmt->close();
         $con->close();
+
+        // Handle image upload
+        if (!empty($_FILES['profile_image']['name'])) {
+            $targetDir = "uploads/";
+            $fileName = basename($_FILES['profile_image']['name']);
+            $targetFilePath = $targetDir . $fileName;
+            $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+
+            // Allow certain file formats
+            $allowTypes = array('jpg', 'png', 'jpeg', 'gif');
+            if (in_array($fileType, $allowTypes)) {
+                // Upload file to server
+                if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $targetFilePath)) {
+                    // Update user image in database
+                    $stmt3 = $con->prepare("UPDATE tbl_users SET user_image = ? WHERE user_id = ?");
+                    $stmt3->bind_param("si", $fileName, $user_id);
+
+                    if ($stmt3->execute()) {
+                        echo "Profile photo updated successfully";
+                        // Update $user_image variable if needed
+                        $user_image = $fileName;
+                    } else {
+                        echo "Error updating profile photo: " . $stmt3->error;
+                    }
+
+                    $stmt3->close();
+                } else {
+                    echo "Error uploading photo.";
+                }
+            } else {
+                echo 'Invalid file format. Allowed types: jpg, jpeg, png, gif';
+            }
+        }
     }
-}
+}*/
 ?>
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+    <link rel="stylesheet" href="css/style4.css"> <!-- Ensure this path is correct -->
 </head>
-<header>
-    <div id="navbar">
-        <div id="navbar-contents">  
-            
-        </div>
-    </div>
-</header>
 <body>
 
-<div class='user-details'>
-    <p>Welcome <?php echo $user_firstname.' '.$user_lastname?></p>
-    <p> Username: <?php echo $user_name?><br>Email: <?php echo $user_email?></p>
+<div class="container emp-profile">
+        <div class="row">
+        <div class="col-md-4">
+            <form method="POST" action="process/process.upload_image.php" enctype="multipart/form-data">
+                <div class="profile-img">
+                    <?php
+                    $res = mysqli_query($con, "SELECT user_image FROM tbl_users WHERE user_id=$user_id");
+                    while($row = mysqli_fetch_assoc($res)) {
+                        $file_path = 'img/' . $row['user_image'];
+                        $alt_image = 'img/rom.jpg';
 
-    <a href='logout.php'><button class='btn'>Logout</button></a>
-    <a href='index.php'><button class='btn'>Home</button></a>
+                            // Check if the main image exists
+                            if (file_exists($file_path)) {
+                                // If the main image exists, use its alt text
+                                $alt_text = 'Uploaded Image';
+                            } else {
+                                // If the main image doesn't exist, use the alternative image name
+                                $alt_text = $alt_image;
+                            }
+                    }
+                    ?>
+                        <img src="<?php echo $file_path ?>" alt="<?php echo htmlspecialchars($alt_image); ?>" />
+                </div>
+                <input type="file" name="image" required />
+                <button type="submit" name="submit">Submit</button>
+            </form>
+        </div>
+            <div class="col-md-6">
+            <div class="profile-head">
+                <h5>Welcome, <?php echo $user_firstname . ' ' . $user_lastname; ?>!</h5>
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link <?php if ($subpage == 'about') echo 'active'; ?>" id="home-tab" data-toggle="tab" href="profile.php?subpage=about" role="tab" aria-controls="home" aria-selected="true">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?php if ($subpage == 'review') echo 'active'; ?>" id="review-tab" data-toggle="tab" href="profile.php?subpage=review" role="tab" aria-controls="review" aria-selected="false">Review</a>
+                    </li>
+                </ul>
+            </div>
+            </div>
+            <div class="col-md-2">
+                <a href='index.php' class="btn btn-secondary">Home</a> 
+                <a href='logout.php' class="btn btn-secondary">Logout</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+            
+            </div>
+            <div class="col-md-8">
+            <?php
+                /*Switch case for the subpage of the Admins Page */
+                switch($subpage){
+                    case 'about':
+                        require_once 'profile-about.php';
+                    break; 
+                    case 'review':
+                        require_once 'review.php';
+                    break; 
+                    default:
+                        require_once 'profile-about.php';
+                    break;
+                }
+            ?>
+            </div>
+        </div>
 </div>
 
-<div class="container">
-    <div class="row">
-        <form action="profile.php" method="post" id="reviewForm">
-            <div>
-                <h3>Leave a review!</h3>
-            </div>
-            <div>
-                <label>Comment</label>  
-                <input type="text" name="content" required>
-            </div>
-            <div class="rateyo" id="rating" data-rateyo-rating="4" data-rateyo-num-stars="5" data-rateyo-score="3">
-            </div>
-            <span class='result'>0</span>
-            <input type="hidden" name="rating">
-            <div><input type="submit" name="add"></div>
-        </form>
-    </div>
-</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
-<script>
-$(function () {
-    $(".rateyo").rateYo().on("rateyo.change", function (e, data) {
-        var rating = data.rating;
-        $(this).parent().find('.score').text('score :' + $(this).attr('data-rateyo-score'));
-        $(this).parent().find('.result').text('rating :' + rating);
-        $(this).parent().find('input[name=rating]').val(rating); // add rating value to input field
-    });
-});
-</script>
 
 </body>
 </html>

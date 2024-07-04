@@ -244,17 +244,6 @@ header .icons #menu-bars {
     background-color: #3e8e41;
 }
 
-#menu{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr));
-    gap: 1.5rem;
-}
-
-#menu .menu-images{
-    width: 60%;
-    height: 80%;
-}
-
 
 
 /* Swiper container should occupy the full width */
@@ -319,6 +308,8 @@ header .icons #menu-bars {
 .home .home-slider .slide .content h3 {
     font-size: 5rem; /* Ensure the font size remains as intended */
 }
+
+
 
 .dishes .box-container {
     display: grid;
@@ -549,7 +540,6 @@ input {
     width: 100%;
     border-radius: 1rem;
     box-shadow: var(--box-shadow);
-    overflow: hidden;
     transition: .5s;
 }
 
@@ -562,7 +552,7 @@ input {
 }
 
 .gallery .photo-gallery .pic::before {
-    position: absolute;
+    
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -635,7 +625,6 @@ input {
 
 .review {
     padding: 2rem 5%;
-    color: #f2f2f2;
 }
 
 .review .sub-heading,
@@ -769,6 +758,7 @@ input {
 
 
 
+
 /* Adjustments for responsiveness */
 @media (max-width: 768px) {
     .review .slide {
@@ -783,6 +773,7 @@ input {
         width: 5rem;
     }
 }
+
 
 
 /* media queries */

@@ -1,7 +1,7 @@
-<!--User Class File-->
+<!--Review Class File-->
 <?php
-/*Creates User Object with database connection */
-class User{
+/*Creates Review Object with database connection */
+class Review{
 	private $DB_SERVER='localhost';
 	private $DB_USERNAME='root';
 	private $DB_PASSWORD='';
@@ -10,24 +10,15 @@ class User{
 	public function __construct(){
 		$this->conn = new PDO("mysql:host=".$this->DB_SERVER.";dbname=".$this->DB_DATABASE,$this->DB_USERNAME,$this->DB_PASSWORD);
 	}
-    
-    /*Function to detect if username or email already exists */
-    public function user_exists($username, $email) {
-        $sql = "SELECT count(*) FROM tbl_users WHERE user_name = :username OR user_email = :email";
-        $q = $this->conn->prepare($sql);
-        $q->execute(['username' => $username, 'email' => $email]);
-        $number_of_rows = $q->fetchColumn();
-        return $number_of_rows > 0;
-    }
 
-	/*Function for creating a new user */
-	public function new_user($user_firstname,$user_lastname,$user_name,$user_email,$password,$user_status){
+	/*Function for creating a review */
+	public function new_review($user_id,$user_content,$user_rating){
 		
 		$data = [
-			[$user_firstname,$user_lastname,$user_name,$user_email,$password,$user_status],
+			[$user_id,$user_content,$user_rating],
 		];
 		/*Stores parameters passed from the creation page inside the database */
-		$stmt = $this->conn->prepare("INSERT INTO tbl_users(user_firstname, user_lastname, user_name, user_email, user_password, user_status) VALUES (?,?,?,?,?,?)");
+		$stmt = $this->conn->prepare("INSERT INTO tbl_review(user_id, review_content, review_rating) VALUES (?,?,?)");
 		try {
 			$this->conn->beginTransaction();
 			foreach ($data as $row)
@@ -39,17 +30,26 @@ class User{
 			$this->conn->rollback();
 			throw $e;
 		}
-
-		return true;
-
+		
+        return true;
 	}
 
-	public function update_user_image($user_id,$user_image){
-        /*Updates data from the database using the parameters passed from the profile updating page*/
-        $sql = "UPDATE tbl_users SET user_image=:user_image WHERE user_id=:user_id";
+    public function update_user_status($user_id){
+        /*Updates user status to reviewed*/
+        $user_status = "Reviewed";
+        $sql = "UPDATE tbl_users SET user_status=:user_status WHERE user_id=:user_id";
 
         $q = $this->conn->prepare($sql);
-        $q->execute(array(':user_id'=>$user_id,':user_image'=>$user_image));
+        $q->execute(array(':user_id'=>$user_id,':user_status'=>$user_status));
+        return true;
+    }
+
+	public function update_review($user_id,$user_content,$user_rating){
+        /*Updates user review*/
+        $sql = "UPDATE tbl_review SET review_content=:user_content, review_rating=:user_rating WHERE user_id=:user_id";
+
+        $q = $this->conn->prepare($sql);
+        $q->execute(array(':user_id'=>$user_id,':user_content'=>$user_content,':user_rating'=>$user_rating));
         return true;
     }
 	/*Function for updating an admin */
