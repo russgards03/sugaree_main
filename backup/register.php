@@ -1,7 +1,5 @@
-<?php
+<?php/*
 include_once 'config/config.php';
-
-
 if(isset($_POST['submit'])){
     $user_firstname = $_POST['firstname'];
     $user_lastname = $_POST['lastname'];
@@ -28,7 +26,7 @@ if(isset($_POST['submit'])){
             echo "Error Occurred: " . mysqli_error($con);
         }
     }
-}
+}*/
 ?>
 
 <!DOCTYPE html>
@@ -49,7 +47,7 @@ if(isset($_POST['submit'])){
 
 	<div id="login-block">
 		<h3>REGISTER</h3>
-		<form method="POST" action="">
+		<form method="POST" action="processes/process.user.php?action=new">
         <div class="field input">
 			<label for="firstname">First Name</label>
 			<input type="text" class="input" name="firstname" autocomplete="off" placeholder="Enter first name" required/>
@@ -68,89 +66,13 @@ if(isset($_POST['submit'])){
 		</div>
 		<div class="field input">
 			<label for="password">Password</label>
-			<input type="password" id="password" class="input" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" placeholder="Enter password.." required/>
-            </br><h7> Password should be more than 8 characters and should contain 1 capital letter and 1 number. </h7>
-
-            <script>
-                var myInput = document.getElementById("password");
-                var letter = document.getElementById("letter");
-                var capital = document.getElementById("capital");
-                var number = document.getElementById("number");
-                var length = document.getElementById("length");
-
-                // When the user clicks on the password field, show the message box
-                myInput.onfocus = function() {
-                    document.getElementById("message").style.display = "block";
-                }
-
-              // When the user clicks outside of the password field, hide the message box
-              myInput.onblur = function() {
-                document.getElementById("message").style.display = "none";
-              }
-
-              // When the user starts to type something inside the password field
-              myInput.onkeyup = function() {
-                // Validate lowercase letters
-                var lowerCaseLetters = /[a-z]/g;
-                if(myInput.value.match(lowerCaseLetters)) {
-                  letter.classList.remove("invalid");
-                  letter.classList.add("valid");
-                } else {
-                  letter.classList.remove("valid");
-                  letter.classList.add("invalid");
-              }
-
-                // Validate capital letters
-                var upperCaseLetters = /[A-Z]/g;
-                if(myInput.value.match(upperCaseLetters)) {
-                  capital.classList.remove("invalid");
-                  capital.classList.add("valid");
-                } else {
-                  capital.classList.remove("valid");
-                  capital.classList.add("invalid");
-                }
-
-                // Validate numbers
-                var numbers = /[0-9]/g;
-                if(myInput.value.match(numbers)) {
-                  number.classList.remove("invalid");
-                  number.classList.add("valid");
-                } else {
-                  number.classList.remove("valid");
-                  number.classList.add("invalid");
-                }
-
-                // Validate length
-                if(myInput.value.length >= 8) {
-                  length.classList.remove("invalid");
-                  length.classList.add("valid");
-                } else {
-                  length.classList.remove("valid");
-                  length.classList.add("invalid");
-                }
-              }
-              // Disable form submission for non-managers
-                var accessLevel = document.getElementById("access");
-                accessLevel.addEventListener("change", function() {
-                    var selectedValue = accessLevel.options[accessLevel.selectedIndex].value;
-                    if (selectedValue !== "Manager") {
-                        var form = document.forms["Userpage"];
-                        form.onsubmit = function() {
-                            alert("Only the manager can access this form.");
-                            return false;
-                        };
-                    } else {
-                        document.forms["Userpage"].onsubmit = null;
-                    }
-                });
-            </script>
+			<input type="password" class="input" name="password" autocomplete="off" placeholder="Enter password" required/>
 		</div>
 		<div class="field">
 			<input type="submit" name="submit" value="Register"/>
 		</div>
 		<div class="links">
 			Already have an account?<br><a href="login.php">Login Here</a>
-
 		</div>
 		</form>
 	</div>

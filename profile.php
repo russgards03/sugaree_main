@@ -24,6 +24,7 @@ $user_lastname = $user->get_user_lname($user_id);
 $user_review = $user->get_user_review($user_id);
 $user_rating = $user->get_user_rating($user_id);
 $user_status = $user->get_user_status($user_id);
+$user_role = $user->get_user_role($user_id);
 
 /* Process form submission 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
