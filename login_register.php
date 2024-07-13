@@ -2,10 +2,8 @@
 include_once 'config/config.php';
 include_once 'class/class.user.php';
 
-/* Define Object */
 $user = new User();
 
-/* Check if the user is already logged in */
 if($user->get_session()){
     header("location: index.php");
     exit();
@@ -15,7 +13,6 @@ if(isset($_REQUEST['login_submit'])){
     extract($_REQUEST);
     $login = $user->check_login($user_identifier, md5($user_password));
     if($login){
-        // Set session variable
         $_SESSION['username'] = $user_identifier;
         header("location: index.php");
         exit();
@@ -118,19 +115,15 @@ if(isset($_REQUEST['login_submit'])){
                             var length = document.getElementById("length");
                             var closeBtn = document.getElementsByClassName("close")[0];
 
-                            // When the user clicks on the password field, show the message box
                             myInput.onfocus = function() {
                                 message.style.display = "block";
                             }
 
-                            // When the user clicks on <span> (x), close the modal
                             closeBtn.onclick = function() {
                                 message.style.display = "none";
                             }
 
-                            // When the user starts to type something inside the password field
                             myInput.onkeyup = function() {
-                                // Validate lowercase letters
                                 var lowerCaseLetters = /[a-z]/g;
                                 if(myInput.value.match(lowerCaseLetters)) {
                                     letter.classList.remove("invalid");
@@ -140,7 +133,6 @@ if(isset($_REQUEST['login_submit'])){
                                     letter.classList.add("invalid");
                                 }
 
-                                // Validate capital letters
                                 var upperCaseLetters = /[A-Z]/g;
                                 if(myInput.value.match(upperCaseLetters)) {
                                     capital.classList.remove("invalid");
@@ -150,7 +142,6 @@ if(isset($_REQUEST['login_submit'])){
                                     capital.classList.add("invalid");
                                 }
 
-                                // Validate numbers
                                 var numbers = /[0-9]/g;
                                 if(myInput.value.match(numbers)) {
                                     number.classList.remove("invalid");
@@ -160,7 +151,6 @@ if(isset($_REQUEST['login_submit'])){
                                     number.classList.add("invalid");
                                 }
 
-                                // Validate length
                                 if(myInput.value.length >= 8) {
                                     length.classList.remove("invalid");
                                     length.classList.add("valid");

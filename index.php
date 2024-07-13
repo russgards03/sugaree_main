@@ -4,7 +4,13 @@ include_once 'class/class.user.php';
 
 $user = new User();
 
-$user_identifier = $_SESSION['user_identifier'];
+/* Checks if the user is logged in */
+if(!$user->get_session()){
+    $user_identifier = "N/A";
+} else {
+    $user_identifier = $_SESSION['user_identifier'];
+}
+
 $user_id = $user->get_user_id($user_identifier);
 $user_firstname = $user->get_user_fname($user_id);
 
@@ -16,7 +22,7 @@ try {
     $specialties = $stmtSpecialties->fetchAll(PDO::FETCH_ASSOC);
 
     $stmtDishes = $pdo->prepare("SELECT * FROM tbl_dishes WHERE dish_popularity = :popularity");
-    $stmtDishes->execute(['popularity' => 'popular']);
+    $stmtDishes->execute(['popularity' => 'yes']);
     $dishes = $stmtDishes->fetchAll(PDO::FETCH_ASSOC);
 
     $stmtImages = $pdo->query("SELECT * FROM tbl_images");
@@ -80,6 +86,7 @@ if (!empty($videoData['items'])) {
                         <a href="#"><img src="img/grab.png" alt="Grab Logo" class="logo"> Grab</a>
                         <a href="#"><img src="img/foodpanda.png" alt="FoodPanda Logo" class="logo"> FoodPanda</a>
                         <a href="https://www.facebook.com/EboyRiderOfficialPage" target="_blank"><img src="img/eboy.jpg" alt="Eboy Logo" class="logo"> Eboy</a>
+                        <a href="#"><img src="img/logo.png" alt="Eboy Logo" class="logo"> Pick-Up</a>
                     </div>
                 </div>
             </nav>
@@ -137,7 +144,6 @@ if (!empty($videoData['items'])) {
                 <div class="box">
                     <img src="<?php echo htmlspecialchars($dish['dish_img']); ?>" alt="">
                     <h3><?php echo htmlspecialchars($dish['dish_name']); ?></h3>
-                    <span>₱ <?php echo number_format($dish['dish_price'], 2); ?></span>
                     <a href="menu.php?category=<?php echo urlencode($dish['dish_category']); ?>" class="btn">Go to Menu</a>
                 </div>
                 <?php endforeach; ?>

@@ -34,7 +34,9 @@ if(isset($_POST['submit'])){
     <link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Assistant&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/custom.css?<?php echo time();?>">
+    <link rel="stylesheet" href="css/style.css<?php echo time();?>">
+
+	<script src="js/script.js"></script>
 	<title>LOGIN</title>
 </head>
 <body>
@@ -57,6 +59,10 @@ if(isset($_POST['submit'])){
 		</div>
 		<div class="links">
 			Don't have an account yet?<br><a href="register.php">Register Here</a>
+		</div>
+		<div class="btn">
+		<a href="index.php">Back</a>
+		</div>
 		</div>
 		</form>
 	</div>

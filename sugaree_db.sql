@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS `tbl_users` (
   `user_email` varchar(180) NOT NULL default '',
   `user_password` varchar(180) NOT NULL default '',
   `user_status` varchar(180) NOT NULL default '',
-  `user_image` varchar(180) NOT NULL default '',  
+  `user_image` varchar(180) NOT NULL default '',
   `user_role` varchar(180) NOT NULL default '', 
   PRIMARY KEY  (`user_id`)
 );
@@ -20,10 +20,8 @@ CREATE TABLE `tbl_dishes` (
   `dish_id` int(11) NOT NULL AUTO_INCREMENT,
   `dish_name` varchar(255) NOT NULL,
   `dish_img` varchar(255) NOT NULL,
-  `dish_price` float(11) NOT NULL,
   `dish_popularity` varchar(255) NOT NULL,
   `dish_category` varchar(255) NOT NULL,
-  `dish_calories` float(11) NOT NULL,
   `dish_description` varchar(255) NOT NULL,
   PRIMARY KEY (`dish_id`)
 );
@@ -63,17 +61,17 @@ VALUES
   ("Croissant", "Picture a golden-brown crescent-shaped delight, freshly baked and irresistibly fragrant, waiting to be savored.", "img/Croissant.png", "img/Croissant.png")
 ;
 
-INSERT into tbl_dishes (`dish_id`, `dish_name`, `dish_img`, `dish_price`, `dish_category`, `dish_popularity`, `dish_calories`, `dish_description`) 
+INSERT into tbl_dishes (`dish_id`, `dish_name`, `dish_img`, `dish_category`, `dish_popularity`, `dish_description`) 
 VALUES 
-(NULL, "Meatballs with Pesto", "img/menu/Appetizers/Meatballs with Pesto.png", "89.90", "Appetizers", "Popular", "270", "Lorem ipsum dolor sit amet"),
-(NULL, "Donut Tiramisu", "img/menu/Donuts/Donut Tiramisu.png", "89.90", "Donuts", "Popular", "300", "Lorem ipsum dolor sit amet"), 
-(NULL, "Glazed Watermelon Donut", "img/menu/Donuts/Glazed Watermelon Donut.png", "99.99", "Donuts", "Popular", "100", "Lorem ipsum dolor sit amet"), 
-(NULL, "Lemon Merengue Donut", "img/menu/Donuts/Lemon Merengue Donut.png", "89.90", "Donuts", "Popular", "300", "Lorem ipsum dolor sit amet"), 
-(NULL, "Eggplant Parm with Mozzarella", "img/menu/Sandwiches/Eggplant Parm with Mozzarella.png", "89.90", "Sandwiches", "Popular", "150", "Lorem ipsum dolor sit amet"), 
-(NULL, "Inasal Cheese Steak", "img/menu/Sandwiches/Inasal Cheese Steak.png",  "89.90", "Sandwiches", "Popular", "300", "Lorem ipsum dolor sit amet"), 
-(NULL, "Meatball Parm with Mozzarella", "img/menu/Sandwiches/Meatball Parm with Mozzarella.png", "89.90", "Sandwiches", "Popular", "350", "Lorem ipsum dolor sit amet"),
-(NULL, "Philly Cheese Steak", "img/menu/Sandwiches/Philly Cheese Steak.png",  "89.90", "Sandwiches", "Popular", "300", "Lorem ipsum dolor sit amet"),
-(NULL, "Salisbury Italian Roast Pork with Spinach and Provolone Cheese", "img/menu/Sandwiches/Salisbury Italian Roast Pork with Spinach and Provolone Cheese.png",  "89.90", "Sandwiches", "Popular", "300", "Lorem ipsum dolor sit amet");
+(NULL, "Meatballs with Pesto", "img/menu/Appetizers/Meatballs with Pesto.png", "Appetizers", "Popular", "Lorem ipsum dolor sit amet"),
+(NULL, "Donut Tiramisu", "img/menu/Donuts/Donut Tiramisu.png", "Donuts", "Popular", "Lorem ipsum dolor sit amet"), 
+(NULL, "Glazed Watermelon Donut", "img/menu/Donuts/Glazed Watermelon Donut.png", "Donuts", "Popular", "Lorem ipsum dolor sit amet"), 
+(NULL, "Lemon Merengue Donut", "img/menu/Donuts/Lemon Merengue Donut.png", "Donuts", "Popular", "Lorem ipsum dolor sit amet"), 
+(NULL, "Eggplant Parm with Mozzarella", "img/menu/Sandwiches/Eggplant Parm with Mozzarella.png", "Sandwiches", "Popular", "Lorem ipsum dolor sit amet"), 
+(NULL, "Inasal Cheese Steak", "img/menu/Sandwiches/Inasal Cheese Steak.png", "Sandwiches", "Popular", "Lorem ipsum dolor sit amet"), 
+(NULL, "Meatball Parm with Mozzarella", "img/menu/Sandwiches/Meatball Parm with Mozzarella.png", "Sandwiches", "Popular", "Lorem ipsum dolor sit amet"),
+(NULL, "Philly Cheese Steak", "img/menu/Sandwiches/Philly Cheese Steak.png", "Sandwiches", "Popular", "Lorem ipsum dolor sit amet"),
+(NULL, "Salisbury Italian Roast Pork with Spinach and Provolone Cheese", "img/menu/Sandwiches/Salisbury Italian Roast Pork with Spinach and Provolone Cheese.png", "Sandwiches", "Popular", "Lorem ipsum dolor sit amet");
 ;
 
 INSERT INTO tbl_images (`image_src`, `image_alt`, `image_category`)

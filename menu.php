@@ -1,21 +1,25 @@
 <?php
 include 'config/config.php';
 include_once 'class/class.user.php';
+include_once 'class/class.dish.php';
 
 $category = isset($_GET['category']) ? $_GET['category'] : '';
 
 /* Define Object */
 $user = new User();
+$dish = new Dish();
 
 /* Checks if the user is logged in */
 if(!$user->get_session()){
-    header("location: login_register.php");
-    exit();
+    $user_identifier = "N/A";
+} else {
+    $user_identifier = $_SESSION['user_identifier'];
 }
 
-$user_identifier = $_SESSION['user_identifier'];
 $user_id = $user->get_user_id($user_identifier);
 $user_role = $user->get_user_role($user_id);
+
+$dish_id = $dish->get_dish_id($dish_name);
 
 
 try {
@@ -54,28 +58,59 @@ try {
     <link rel="stylesheet" href="assets/css/jquery.fancybox.min.css">
     
     <link rel="stylesheet" href="css/style3.css">
-    <style>
+</head>
+<style>
         .dish-info {
             display: none;
         }
-    </style>
-    <script>
-        function toggleDetails(dishId) {
-            const infoElement = document.getElementById('info-' + dishId);
-            if (infoElement.style.display === 'none' || infoElement.style.display === '') {
-                infoElement.style.display = 'block';
-            } else {
-                infoElement.style.display = 'none';
-            }
+
+        .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+    overflow: auto; /* Enable scroll if modal content exceeds viewport */
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Adjust as necessary */
+    max-width: 600px; /* Limit maximum width */
+}
+
+
+        /* Close button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
         }
-    </script>
-</head>
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+
+<body>
 
 <?php if($user_role == 'Admin'){
 ?>
 
-<body>
-
     <section style="background-image: url(assets/images/menu-bg.png);" class="our-menu section bg-light repeat-img" id="menu">
         <div class="sec-wp">
             <div class="container">
@@ -86,7 +121,9 @@ try {
                             <h2 class="h2-title">Sweet & Sugaree Smile, <span>Welcome to Our Menu!</span></h2>
                             <div class="sec-title-shape mb-4">
                                 <img src="assets/images/title-shape.svg" alt="">
+                                
                             </div>
+                            <a href="add_dish.php" class="button">ADD DISH</a>
                         </div>
                     </div>
                 </div>
@@ -94,7 +131,7 @@ try {
                     <div class="row">
                         <div class="col-lg-12 m-auto">
                             <div class="menu-tab text-center">
-                            <ul class="filters">
+                                <ul class="filters">
                                     <div class="filter-active"></div>
                                     <li class="filter" data-filter=".all">
                                         <img src="assets/images/menu-1.png" alt="">
@@ -117,7 +154,6 @@ try {
                                         <a href="index.php">Home</a>
                                     </li>
                                 </ul>
-                                <button type="submit" name="submit">Submit</button>
                             </div>
                         </div>
                     </div>
@@ -133,20 +169,35 @@ try {
                                     <div class="dish-title">
                                         <h3 class="h3-title"><?php echo htmlspecialchars($dish['dish_name']); ?></h3>
                                     </div>
-                                    <div class="dish-info" id="info-<?php echo $dish['dish_id']; ?>">
-                                        <ul>
-                                            <li>
-                                                <p>Type</p>
-                                                <b><?php echo htmlspecialchars($dish['dish_category']); ?></b>
-                                            </li>
-                                            <li>
-                                                <p>Description</p>
-                                                <b><?php echo htmlspecialchars($dish['dish_description']); ?></b>
-                                            </li>
-                                        </ul>
+                                </div>
+                            </div>
+
+                            <!-- Modal Structure -->
+                            <div id="modal-<?php echo $dish['dish_id']; ?>" class="modal" onclick="closeModalOutside(event, <?php echo $dish['dish_id']; ?>)">
+                                <div class="modal-content">
+                                    <span class="close" onclick="closeModal(<?php echo $dish['dish_id']; ?>)">&times;</span>
+                                    
+                                        <img src="<?php echo htmlspecialchars($dish['dish_img']); ?>" alt="">
+                                    
+                                    <div class="dish-title">
+                                        <h3 class="h3-title"><?php echo htmlspecialchars($dish['dish_name']); ?></h3>
                                     </div>
-                                    <button type="submit" name="submit">Submit</button>
-                                    <button type="submit" name="submit">Submit</button>
+                                    <ul>
+                                        <li>
+                                            <p>Type</p>
+                                            <b><?php echo htmlspecialchars($dish['dish_category']); ?></b>
+                                        </li>
+                                        <li>
+                                            <p>Description</p>
+                                            <b><?php echo htmlspecialchars($dish['dish_description']); ?></b>
+                                        </li>
+                                    </ul>
+                                    <form action="edit_dish.php" method="get">
+                                        <input type="hidden" name="dish_id" value="<?php echo $dish_id; ?>">
+                                        <button type="submit" class="btn btn-primary">Edit Dish</button>
+                                    </form>
+                                    <br>
+                                    <div><input type="submit" name="delete_dish" class="btn btn-primary btn-lg" value="Delete Dish"></div>
                                 </div>
                             </div>
                         <?php endforeach; ?>
@@ -155,14 +206,30 @@ try {
             </div>
         </div>
     </section>
-</body>
-</html>
+
+    <script>
+        function toggleDetails(dishId) {
+            var modal = document.getElementById('modal-' + dishId);
+            modal.style.display = "block";
+        }
+
+        function closeModal(dishId) {
+            var modal = document.getElementById('modal-' + dishId);
+            modal.style.display = "none";
+        }
+
+        // Close modal if clicked outside of modal-content
+        function closeModalOutside(event, dishId) {
+            var modal = document.getElementById('modal-' + dishId);
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 
 <?php
 }else{?>
 
-<body>
-
     <section style="background-image: url(assets/images/menu-bg.png);" class="our-menu section bg-light repeat-img" id="menu">
         <div class="sec-wp">
             <div class="container">
@@ -181,7 +248,7 @@ try {
                     <div class="row">
                         <div class="col-lg-12 m-auto">
                             <div class="menu-tab text-center">
-                            <ul class="filters">
+                                <ul class="filters">
                                     <div class="filter-active"></div>
                                     <li class="filter" data-filter=".all">
                                         <img src="assets/images/menu-1.png" alt="">
@@ -219,18 +286,29 @@ try {
                                     <div class="dish-title">
                                         <h3 class="h3-title"><?php echo htmlspecialchars($dish['dish_name']); ?></h3>
                                     </div>
-                                    <div class="dish-info" id="info-<?php echo $dish['dish_id']; ?>">
-                                        <ul>
-                                            <li>
-                                                <p>Type</p>
-                                                <b><?php echo htmlspecialchars($dish['dish_category']); ?></b>
-                                            </li>
-                                            <li>
-                                                <p>Description</p>
-                                                <b><?php echo htmlspecialchars($dish['dish_description']); ?></b>
-                                            </li>
-                                        </ul>
+                                </div>
+                            </div>
+
+                            <!-- Modal Structure -->
+                            <div id="modal-<?php echo $dish['dish_id']; ?>" class="modal" onclick="closeModalOutside(event, <?php echo $dish['dish_id']; ?>)">
+                                <div class="modal-content">
+                                    <span class="close" onclick="closeModal(<?php echo $dish['dish_id']; ?>)">&times;</span>
+                                    
+                                        <img src="<?php echo htmlspecialchars($dish['dish_img']); ?>" alt="">
+                                    
+                                    <div class="dish-title">
+                                        <h3 class="h3-title"><?php echo htmlspecialchars($dish['dish_name']); ?></h3>
                                     </div>
+                                    <ul>
+                                        <li>
+                                            <p>Type</p>
+                                            <b><?php echo htmlspecialchars($dish['dish_category']); ?></b>
+                                        </li>
+                                        <li>
+                                            <p>Description</p>
+                                            <b><?php echo htmlspecialchars($dish['dish_description']); ?></b>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         <?php endforeach; ?>
@@ -239,10 +317,29 @@ try {
             </div>
         </div>
     </section>
-</body>
+
+    <script>
+        function toggleDetails(dishId) {
+            var modal = document.getElementById('modal-' + dishId);
+            modal.style.display = "block";
+        }
+
+        function closeModal(dishId) {
+            var modal = document.getElementById('modal-' + dishId);
+            modal.style.display = "none";
+        }
+
+        // Close modal if clicked outside of modal-content
+        function closeModalOutside(event, dishId) {
+            var modal = document.getElementById('modal-' + dishId);
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 
 <?php 
 } 
 ?>
-
+</body>
 </html>

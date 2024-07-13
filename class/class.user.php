@@ -1,6 +1,4 @@
-<!--User Class File-->
 <?php
-/*Creates User Object with database connection */
 class User{
 	private $DB_SERVER='localhost';
 	private $DB_USERNAME='root';
@@ -21,13 +19,13 @@ class User{
     }
 
 	/*Function for creating a new user */
-	public function new_user($user_firstname,$user_lastname,$user_name,$user_email,$password,$user_status){
+	public function new_user($user_firstname,$user_lastname,$user_name,$user_email,$password,$user_status,$user_role){
 		
 		$data = [
-			[$user_firstname,$user_lastname,$user_name,$user_email,$password,$user_status],
+			[$user_firstname,$user_lastname,$user_name,$user_email,$password,$user_status,$user_role],
 		];
 		/*Stores parameters passed from the creation page inside the database */
-		$stmt = $this->conn->prepare("INSERT INTO tbl_users(user_firstname, user_lastname, user_name, user_email, user_password, user_status) VALUES (?,?,?,?,?,?)");
+		$stmt = $this->conn->prepare("INSERT INTO tbl_users(user_firstname, user_lastname, user_name, user_email, user_password, user_status, user_role) VALUES (?,?,?,?,?,?,?)");
 		try {
 			$this->conn->beginTransaction();
 			foreach ($data as $row)
@@ -168,6 +166,14 @@ class User{
 		$q->execute(['user_id' => $user_id]);
 		$user_status = $q->fetchColumn();
 		return $user_status;
+	}
+	/*Function for getting the admin password from the database */
+	function get_user_role($user_id){
+		$sql="SELECT user_role FROM tbl_users WHERE user_id = :user_id";	
+		$q = $this->conn->prepare($sql);
+		$q->execute(['user_id' => $user_id]);
+		$user_role = $q->fetchColumn();
+		return $user_role;
 	}
 	/*Function for getting the session from the database for logging in */
 	function get_session(){

@@ -28,6 +28,7 @@ function create_new_user(){
     $user_email = $_POST['email'];
     $user_password = $_POST['password'];
     $user_status = $_POST['status'];
+    $user_role = "Customer";
 
     $password = md5($user_password);
 
@@ -39,7 +40,7 @@ function create_new_user(){
         header("location: ../login_register.php");
     } else {
         /* Pass the parameters to the class function */
-        $result = $user->new_user($user_firstname,$user_lastname,$user_name,$user_email,$password,$user_status);
+        $result = $user->new_user($user_firstname,$user_lastname,$user_name,$user_email,$password,$user_status,$user_role);
         if($result){
             header("location: ../login_register.php");
         }
