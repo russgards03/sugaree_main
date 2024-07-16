@@ -195,10 +195,13 @@ try {
                                     </ul>
                                     <form action="edit_dish.php" method="get">
                                         <input type="hidden" name="dish_id" value="<?php echo htmlspecialchars($dish['dish_id']); ?>">
-                                        <button type="submit" class="btn btn-primary">Edit Dish</button>
+                                        <button type="submit" class="btn btn-primary btn-lg">Edit Dish</button>
                                     </form>
                                     <br>
-                                    <div><input type="submit" name="delete_dish" class="btn btn-primary btn-lg" value="Delete Dish"></div>
+                                    <form action="delete_dish.php" method="get">
+                                        <input type="hidden" name="dish_id" value="<?php echo htmlspecialchars($dish['dish_id']); ?>">
+                                        <button type="submit" class="btn btn-primary btn-lg">Delete Dish</button>
+                                    </form>
                                 </div>
                             </div>
                         <?php endforeach; ?>

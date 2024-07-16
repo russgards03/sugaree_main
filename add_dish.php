@@ -1,11 +1,15 @@
 <?php
 include 'config/config.php';
 include_once 'class/class.user.php';
+include_once 'class/class.dish.php';
 
 $category = isset($_GET['category']) ? $_GET['category'] : '';
+$dish_id = isset($_GET['dish_id']) ? $_GET['dish_id'] : '';
+
 
 /* Define Object */
 $user = new User();
+$dish = new Dish();
 
 /* Checks if the user is logged in */
 if(!$user->get_session()){

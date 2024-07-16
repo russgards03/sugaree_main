@@ -54,10 +54,10 @@ class Dish{
 	}
 
 	
-	public function delete_dish($dish_name){
-		$sql = "DELETE FROM tbl_dishes WHERE dish_name = :dish_name";
+	public function delete_dish($dish_id){
+		$sql = "DELETE FROM tbl_dishes WHERE dish_id = :dish_id";
 		$stmt = $this->conn->prepare($sql);
-		$stmt->bindParam(':dish_name', $dish_name);
+		$stmt->bindParam(':dish_id', $dish_id);
 		if ($stmt->execute()) {
 			return true;
 		} else {

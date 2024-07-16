@@ -50,4 +50,5 @@ function update_dish() {
         echo "Failed to update dish!";
     }
 }
+
 ?>
