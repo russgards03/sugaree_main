@@ -39,11 +39,17 @@ class Dish{
 		return true;
     }
 
-    public function update_dish($user_id,$user_firstname,$user_lastname){
+    public function update_dish($dish_id, $dish_name, $dish_popularity, $dish_category, $dish_description) {
 		$sql = "UPDATE tbl_dishes SET dish_name=:dish_name, dish_popularity=:dish_popularity, dish_category=:dish_category, dish_description=:dish_description WHERE dish_id=:dish_id";
-
+	
 		$q = $this->conn->prepare($sql);
-		$q->execute(array(':dish_id'=>$dish_id,':dish_name'=>$dish_name,':dish_popularity'=>$dish_popularity,':dish_category'=>$dish_category,':dish_description'=>$dish_description));
+		$q->execute(array(
+			':dish_id' => $dish_id,
+			':dish_name' => $dish_name,
+			':dish_popularity' => $dish_popularity,
+			':dish_category' => $dish_category,
+			':dish_description' => $dish_description
+		));
 		return true;
 	}
 

@@ -5,7 +5,7 @@ include 'class/class.dish.php';
 $dish = new Dish();
 $dish_id = isset($_GET['dish_id']) ? $_GET['dish_id'] : '';
 
-if(!$dish_id){
+if (!$dish_id) {
     echo "No dish ID provided!";
     exit;
 }
@@ -14,7 +14,7 @@ echo "Dish ID: " . $dish_id . "<br>"; // Debugging line to check the dish_id
 
 $dish_details = $dish->get_dish($dish_id);
 
-if(!$dish_details){
+if (!$dish_details) {
     echo "Dish not found!";
     exit;
 }
@@ -28,7 +28,7 @@ if(!$dish_details){
     <title>Edit Dish</title>
 </head>
 <body>
-    <form action="process/edit.dish.php?action=update" method="post" enctype="multipart/form-data">
+    <form action="process/process.dish.php?action=update" method="post" enctype="multipart/form-data">
         <input type="hidden" name="dish_id" value="<?php echo $dish_details['dish_id']; ?>">
         <div class="review-box">
             <br>

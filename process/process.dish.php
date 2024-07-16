@@ -32,19 +32,22 @@ function create_new_dish(){
     }
 }
 
-function update_dish(){  
+function update_dish() {
     $dish = new Dish();
-    /*Receives the parameters passed from the profile updating page form */
+    
     $dish_id = $_POST['dish_id'];
     $dish_name = $_POST['dish_name'];
     $dish_popularity = $_POST['dish_popularity'];
     $dish_category = $_POST['dish_category'];
     $dish_description = $_POST['dish_description'];
     
-    /*Passes the parameters to the class function */
-    $result = $dish->update_dish($dish_name, $dish_popularity, $dish_category, $dish_description);
-    if($result){
-        header("location: ../menu.php");
+    $result = $dish->update_dish($dish_id, $dish_name, $dish_popularity, $dish_category, $dish_description);
+    
+    if ($result) {
+        header("Location: ../menu.php");
+        exit();
+    } else {
+        echo "Failed to update dish!";
     }
 }
 ?>

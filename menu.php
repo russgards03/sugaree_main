@@ -4,6 +4,7 @@ include_once 'class/class.user.php';
 include_once 'class/class.dish.php';
 
 $category = isset($_GET['category']) ? $_GET['category'] : '';
+$dishname = isset($_GET['dishname']) ? $_GET['dishname'] : '';
 
 /* Define Object */
 $user = new User();
@@ -19,7 +20,7 @@ if(!$user->get_session()){
 $user_id = $user->get_user_id($user_identifier);
 $user_role = $user->get_user_role($user_id);
 
-$dish_id = $dish->get_dish_id($dish_name);
+$dish_id = $dish->get_dish_id($dishname);
 
 
 try {
@@ -193,7 +194,7 @@ try {
                                         </li>
                                     </ul>
                                     <form action="edit_dish.php" method="get">
-                                        <input type="hidden" name="dish_id" value="<?php echo $dish_id; ?>">
+                                        <input type="hidden" name="dish_id" value="<?php echo htmlspecialchars($dish['dish_id']); ?>">
                                         <button type="submit" class="btn btn-primary">Edit Dish</button>
                                     </form>
                                     <br>
