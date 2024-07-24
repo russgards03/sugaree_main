@@ -54,6 +54,14 @@ CREATE TABLE `tbl_review` (
   PRIMARY KEY (`review_id`)
 );
 
+DROP TABLE IF EXISTS `tbl_news`;
+CREATE TABLE `tbl_news` (
+  `news_id` int(11) NOT NULL AUTO_INCREMENT,
+  `news_title` varchar(255) NOT NULL,
+  `news_description` varchar(255) NOT NULL,
+  PRIMARY KEY (`news_id`)
+);
+
 INSERT INTO tbl_specialties (`specialty_title` ,`specialty_desc` ,`specialty_img` ,`specialty_alt` ) 
 VALUES
   ("Pizza", "Originating from Italy but cherished worldwide, pizza is a universal symbol of comfort and culinary craftsmanship.", "img/Pizza.png", "img/Pizza.png"),

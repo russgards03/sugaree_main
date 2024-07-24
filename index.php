@@ -18,6 +18,9 @@ try {
     $pdo = new PDO("mysql:host=" . DB_SERVER . ";dbname=" . DB_DATABASE, DB_USERNAME, DB_PASSWORD);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+    $stmtNews = $pdo->query("SELECT * FROM tbl_news");
+    $news = $stmtNews->fetchAll(PDO::FETCH_ASSOC);
+
     $stmtSpecialties = $pdo->query("SELECT * FROM tbl_specialties");
     $specialties = $stmtSpecialties->fetchAll(PDO::FETCH_ASSOC);
 
@@ -67,6 +70,10 @@ if (!empty($videoData['items'])) {
 
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="assets/css/swiper-bundle.min.css">
+        <link rel="stylesheet" href="assets/css/jquery.fancybox.min.css">
         <link rel="stylesheet" href="css/style.css">
 
         <script src="js/script.js"></script>
@@ -87,6 +94,13 @@ if (!empty($videoData['items'])) {
                         <a href="#"><img src="img/foodpanda.png" alt="FoodPanda Logo" class="logo"> FoodPanda</a>
                         <a href="https://www.facebook.com/EboyRiderOfficialPage" target="_blank"><img src="img/eboy.jpg" alt="Eboy Logo" class="logo"> Eboy</a>
                         <a href="#"><img src="img/logo.png" alt="Eboy Logo" class="logo"> Pick-Up</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <a href="#" class="dropbtn">Add Event/Announcement</a>
+                    <div class="dropdown-content">
+                        <a href="add_news.php">Add Announcement</a>
+                        <a href="#">Add Event</a>
                     </div>
                 </div>
             </nav>
@@ -132,6 +146,24 @@ if (!empty($videoData['items'])) {
                     ?>
                 </div>
                 <div class="swiper-pagination"></div>
+            </div>
+        </section>
+
+        <section class="news" id="news">
+            <div class="container">
+                <div class="sec-title text-center mb-5">
+                    <h2 class="h2-title">Announcements</h2>
+                </div>
+                <div class="row">
+                    <?php foreach ($news as $announcement): ?>
+                        <div class="col-md-4 mb-4">
+                            <div class="announcement-item p-3 border rounded">
+                                <h3><?php echo htmlspecialchars($announcement['news_title']); ?></h3>
+                                <p><?php echo htmlspecialchars($announcement['news_description']); ?></p>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
             </div>
         </section>
 

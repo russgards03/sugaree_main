@@ -52,7 +52,6 @@ class Dish{
 		));
 		return true;
 	}
-
 	
 	public function delete_dish($dish_id){
 		$sql = "DELETE FROM tbl_dishes WHERE dish_id = :dish_id";
@@ -79,4 +78,5 @@ class Dish{
         return $q->fetch(PDO::FETCH_ASSOC);
     }
 }
+?>
 
